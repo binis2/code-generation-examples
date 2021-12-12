@@ -1,0 +1,8 @@
+package net.binis.example.core.objects.base;
+
+@FunctionalInterface
+public interface Valuable<T> {
+
+    T getValue();
+
+}

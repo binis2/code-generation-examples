@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" packages="com.spiralbank.logging.layout">
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%d %c [%t] [s:%X{sessionId}] [r:%X{requestId}] [e:%X{externalRequestId}] [%marker] %-5level: %msg%n%throwable}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+        <Logger name="org.hibernate.engine.jdbc" level="off"/>
+    </Loggers>
+</Configuration>
