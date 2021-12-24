@@ -8,6 +8,7 @@ import net.binis.example.core.objects.User;
 import net.binis.example.core.objects.base.Previewable;
 import net.binis.example.core.objects.types.AccountType;
 import net.binis.example.core.objects.types.TransactionType;
+import net.binis.example.db.view.AccountView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,8 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         showDownBasics();
         showDownRelations();
         showDownCollections();
+        showDownProjections();
+
     }
 
     private void showDownBasics() {
@@ -99,7 +102,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
                             .save())
                     .save();
 
-            Account.create()
+            var closed = Account.create()
                     .user(user)
                     .name("Closed account")
                     .type(AccountType.CHECKING)
@@ -108,6 +111,15 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
                     .available(0.0)
                     .balance(0.0)
                     .active(false)
+                    .save();
+
+            Transaction.create()
+                    .amount(1000000.0)
+                    .externalId("asdf012")
+                    .title("with counterparty")
+                    .type(TransactionType.DEPOSIT)
+                    .account(checking)
+                    .counterparty(closed)
                     .save();
 
             User.create()
@@ -172,6 +184,16 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 //        });
 
     }
+
+    private void showDownProjections() {
+        log.info(DELIMITER);
+        log.info("--- Projections");
+        log.info(DELIMITER);
+
+        log.info("Spring dynamic projections:");
+        Account.find().by().user().fetch().top(AccountView.class).ifPresent(view -> log.info("Customer name: {}", view.getCustomerName()));
+    }
+
 
     private void printUser(User user) {
         User.find().transaction(t -> {

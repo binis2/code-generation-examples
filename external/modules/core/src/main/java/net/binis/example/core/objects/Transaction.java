@@ -28,59 +28,37 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     }
 
     Account getAccount();
-
     double getAmount();
-
     Account getCounterparty();
-
     OffsetDateTime getTimestamp();
-
     TransactionType getType();
 
     Transaction.Modify with();
 
     interface EmbeddedModify<T> extends Transaction.Fields<Transaction.EmbeddedModify<T>> {
-
         EmbeddedCodeCollection<EmbeddedModify<T>, Transaction, T> and();
     }
 
     interface Fields<T> extends BaseInterface.Fields<T> {
-
         T account(Account account);
-
         T amount(double amount);
-
         T counterparty(Account counterparty);
-
         T description(String description);
-
         T externalId(String externalId);
-
         T tag(Object tag);
-
         T timestamp(OffsetDateTime timestamp);
-
         T title(String title);
-
         T type(TransactionType type);
     }
 
     interface Modify extends Transaction.Fields<Transaction.Modify> {
-
         Transaction delete();
-
         Transaction detach();
-
         Transaction done();
-
         Transaction merge();
-
         Transaction refresh();
-
         Transaction save();
-
         Transaction saveAndFlush();
-
         Transaction transaction(Function<Transaction.Modify, Transaction> function);
     }
 
@@ -88,11 +66,8 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     }
 
     interface QueryFields<QR> extends QueryScript<QR>, Transaction.Fields<QR> {
-
         QR created(OffsetDateTime created);
-
         QR createdBy(String createdBy);
-
         QR modifiedBy(String modifiedBy);
     }
 
@@ -100,63 +75,37 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     }
 
     interface QueryFuncs<QR> {
-
         QueryFunctions<Double, QR> amount();
-
         QueryFunctions<OffsetDateTime, QR> created();
-
         QueryFunctions<String, QR> createdBy();
-
         QueryFunctions<String, QR> description();
-
         QueryFunctions<String, QR> externalId();
-
         QueryFunctions<Long, QR> id();
-
         QueryFunctions<OffsetDateTime, QR> modified();
-
         QueryFunctions<String, QR> modifiedBy();
-
         QueryFunctions<OffsetDateTime, QR> timestamp();
-
         QueryFunctions<String, QR> title();
-
         QueryFunctions<TransactionType, QR> type();
     }
 
-    interface QueryName<QS, QO, QR> extends Transaction.QueryFields<QuerySelectOperation<QS, QO, QR>>, Transaction.QueryFuncs<QuerySelectOperation<QS, QO, QR>> {
-
+    interface QueryName<QS, QO, QR> extends Transaction.QueryFields<QuerySelectOperation<QS, QO, QR>>, Transaction.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>> {
         Account.QueryName<QS, QO, QR> account();
-
         Account.QueryName<QS, QO, QR> counterparty();
     }
 
     interface QueryOperationFields<QR> extends QueryScript<QR> {
-
         QR account();
-
         QR amount();
-
         QR counterparty();
-
         QR created();
-
         QR createdBy();
-
         QR description();
-
         QR externalId();
-
         QR id();
-
         QR modified();
-
         QR modifiedBy();
-
         QR timestamp();
-
         QR title();
-
         QR type();
     }
 
@@ -164,9 +113,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     }
 
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Transaction.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, Transaction.QueryFields<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, Transaction.QueryFuncs<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
-
         Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR> account();
-
         Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR> counterparty();
     }
 }

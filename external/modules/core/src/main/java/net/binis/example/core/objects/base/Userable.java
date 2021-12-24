@@ -6,6 +6,5 @@ import javax.annotation.processing.Generated;
 
 @Generated(value = "UserablePrototype", comments = "UserableImpl")
 public interface Userable {
-
     User getUser();
 }

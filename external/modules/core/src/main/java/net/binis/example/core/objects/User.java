@@ -26,52 +26,32 @@ public interface User extends BaseInterface {
     }
 
     List<Account> getAccounts();
-
     String getEmail();
-
     String getFirstName();
-
     String getLastName();
-
     String getPassword();
-
     String getUsername();
 
     User.Modify with();
 
     interface Fields<T> extends BaseInterface.Fields<T> {
-
         T email(String email);
-
         T firstName(String firstName);
-
         T lastName(String lastName);
-
         T password(String password);
-
         T username(String username);
     }
 
     interface Modify extends User.Fields<User.Modify> {
-
         Modify accounts(List<Account> accounts);
-
         EmbeddedCodeCollection<Account.EmbeddedModify<Account.Modify>, Account, Modify> accounts();
-
         User delete();
-
         User detach();
-
         User done();
-
         User merge();
-
         User refresh();
-
         User save();
-
         User saveAndFlush();
-
         User transaction(Function<User.Modify, User> function);
     }
 
@@ -79,11 +59,8 @@ public interface User extends BaseInterface {
     }
 
     interface QueryFields<QR> extends QueryScript<QR>, User.Fields<QR> {
-
         QR created(OffsetDateTime created);
-
         QR createdBy(String createdBy);
-
         QR modifiedBy(String modifiedBy);
     }
 
@@ -91,51 +68,31 @@ public interface User extends BaseInterface {
     }
 
     interface QueryFuncs<QR> {
-
         QueryFunctions<OffsetDateTime, QR> created();
-
         QueryFunctions<String, QR> createdBy();
-
         QueryFunctions<String, QR> email();
-
         QueryFunctions<String, QR> firstName();
-
         QueryFunctions<Long, QR> id();
-
         QueryFunctions<String, QR> lastName();
-
         QueryFunctions<OffsetDateTime, QR> modified();
-
         QueryFunctions<String, QR> modifiedBy();
-
         QueryFunctions<String, QR> password();
-
         QueryFunctions<String, QR> username();
     }
 
-    interface QueryName<QS, QO, QR> extends User.QueryFields<QuerySelectOperation<QS, QO, QR>>, User.QueryFuncs<QuerySelectOperation<QS, QO, QR>> {
+    interface QueryName<QS, QO, QR> extends User.QueryFields<QuerySelectOperation<QS, QO, QR>>, User.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>> {
     }
 
     interface QueryOperationFields<QR> extends QueryScript<QR> {
-
         QR created();
-
         QR createdBy();
-
         QR email();
-
         QR firstName();
-
         QR id();
-
         QR lastName();
-
         QR modified();
-
         QR modifiedBy();
-
         QR password();
-
         QR username();
     }
 
@@ -143,7 +100,6 @@ public interface User extends BaseInterface {
     }
 
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<User.QueryName<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, User.QueryFields<QuerySelectOperation<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, User.QueryFuncs<QuerySelectOperation<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
-
         QueryJoinCollectionFunctions<Account, QuerySelectOperation<User.QuerySelect<QR>, QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>, QR>, QueryJoinAggregateOperation<Account.QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>, Account.QuerySelect<Number>>> accounts();
     }
 }
