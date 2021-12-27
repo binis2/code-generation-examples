@@ -8,7 +8,10 @@ import net.binis.example.core.objects.User;
 import net.binis.example.core.objects.base.Previewable;
 import net.binis.example.core.objects.types.AccountType;
 import net.binis.example.core.objects.types.TransactionType;
-import net.binis.example.db.view.AccountView;
+import net.binis.example.db.view.AggregatedAccountView;
+import net.binis.example.db.view.DynamicAccountView;
+import net.binis.example.db.view.StaticAccountView;
+import net.binis.example.db.view.StaticAccountView2;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -191,7 +194,20 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         log.info(DELIMITER);
 
         log.info("Spring dynamic projections:");
-        Account.find().by().user().fetch().top(AccountView.class).ifPresent(view -> log.info("Customer name: {}", view.getCustomerName()));
+        Account.find().by().user().fetch().top(DynamicAccountView.class).ifPresent(view -> log.info("Customer name with dynamic projection: {}", view.getCustomerName()));
+
+        log.info("Static projections (Note that attempting to get unselected property will throw an exception):");
+        Account.find().by(StaticAccountView.class).top()
+                .ifPresent(view -> log.info("Customer name with static projection that keeps the original entity interface: {} {}", view.getUser().getFirstName(), view.getUser().getLastName()));
+
+        log.info("Static projections:");
+        Account.find().by().projection(StaticAccountView2.class).top()
+                .ifPresent(view -> log.info("Customer name with static projection: {} {}", view.getUserFirstName(), view.getUserLastName()));
+
+        log.info("Projections with custom queries:");
+        Account.find().query("select sum(u.balance) as sumBalance, u.user.firstName || ' ' || u.user.lastName as userName from net.binis.example.core.objects.Account u group by userName").tuples(AggregatedAccountView.class).forEach(view ->
+                log.info("Customer name with custom query: {}", view.getUserName()));
+
     }
 
 
