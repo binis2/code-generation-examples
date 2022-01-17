@@ -28,7 +28,7 @@ import java.time.OffsetDateTime;
         interfaceSetters = false,
         implementationPackage = "net.binis.example.db.entity",
         enrichers = {AsEnricher.class, ModifierEnricher.class},
-        inheritedEnrichers = {CreatorModifierEnricher.class, ModifierEnricher.class, QueryEnricher.class, ValidationEnricher.class})
+        inheritedEnrichers = {CreatorModifierEnricher.class, ModifierEnricher.class, QueryEnricher.class, ValidationEnricher.class, RegionEnricher.class})
 @MappedSuperclass
 @Access(AccessType.FIELD)
 @EntityListeners(AuditingEntityListener.class)

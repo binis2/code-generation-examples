@@ -1,6 +1,8 @@
 package net.binis.example.service.startup;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.binis.codegen.spring.query.QueryProcessor;
 import net.binis.codegen.spring.query.Queryable;
 import net.binis.example.core.objects.Account;
 import net.binis.example.core.objects.Transaction;
@@ -8,6 +10,7 @@ import net.binis.example.core.objects.User;
 import net.binis.example.core.objects.base.Previewable;
 import net.binis.example.core.objects.types.AccountType;
 import net.binis.example.core.objects.types.TransactionType;
+import net.binis.example.core.tools.Time;
 import net.binis.example.db.view.AggregatedAccountView;
 import net.binis.example.db.view.DynamicAccountView;
 import net.binis.example.db.view.StaticAccountView;
@@ -29,13 +32,19 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        QueryProcessor.logQuery();
+        QueryProcessor.logParams();
         log.info("Example queries:");
 
         showDownBasics();
         showDownRelations();
         showDownCollections();
+        showDownAggregations();
         showDownProjections();
+        showDownReferences();
+        showDownAsync();
 
+        sleep(10000);
     }
 
     private void showDownBasics() {
@@ -45,7 +54,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
         log.info("Create or update entity:");
         var user = User.find().by().username("binis").ensure().with()
-                .firstName("binis")
+                .firstName("Binis")
                 .lastName("Belev")
                 .username("binis")
                 .email("binis@binis.dev")
@@ -158,7 +167,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         log.info("Between:");
         Transaction.find().by().amount().between(50., 250.).order().amount().desc()
                 .list().forEach(this::printTransactionSimple);
-        
+
 
     }
 
@@ -210,6 +219,58 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
     }
 
+    private void showDownAggregations() {
+        log.info(DELIMITER);
+        log.info("--- Aggregations");
+        log.info(DELIMITER);
+
+        log.info("Simple count: {}", Account.find().aggregate().cnt().id().get().orElse(0));
+        log.info("Simple sum: {}", Account.find().aggregate().sum().available().get().orElse(0.0));
+
+        log.info("Max with where clause: {}", Account.find().aggregate().max().available().where().active(true).get().orElse(0.0));
+
+        log.info("Multiple aggregations:");
+        Account.find().aggregate()
+                .distinct().active().and()
+                .min().available().and()
+                .max().available().and()
+                .sum().available().and()
+                .avg().available().where().active(true).tuples().forEach(this::printTuple);
+
+        Account.find().aggregate()
+                .distinct().active().tuples().forEach(this::printTuple);
+    }
+
+    private void showDownReferences() {
+        log.info(DELIMITER);
+        log.info("--- References");
+        log.info(DELIMITER);
+
+        log.info("Note: Check JPA documentation for references. Since all data for reference entity is lazy initialized we need a transaction!");
+        log.info("Note: These types of operations are useful for when someone wants to set relation without pulling the all of the related entity data!");
+
+        User.find().transaction(t ->
+                log.info("Get first name thru reference: {}", t.by().upper().username("BINIS").reference().map(User::getFirstName).orElse("Not Found")));
+
+    }
+
+    private void showDownAsync() {
+        log.info(DELIMITER);
+        log.info("--- Async");
+        log.info(DELIMITER);
+
+        log.info("Simple async save:");
+        User.find().by().username("binis").ensure().with().modified(Time.now()).async().save();
+        log.info("Note: In this case the query is executed in the main thread, just the save operation is done in another!");
+        log.info("Note: You need to use AsyncEntityModifier as your base modifier class!");
+
+        log.info("Async lambda:");
+        User.find().async(t -> {
+            t.by().username("binis").ensure().with().modified(Time.now()).save();
+            log.info("Note: In this case everything is executed in different thread. Async also envelops the lambda with transaction!");
+        });
+
+    }
 
     private void printUser(User user) {
         User.find().transaction(t -> {
@@ -233,7 +294,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
     private void printTransactionSimple(Transaction transaction) {
         Transaction.find().transaction(t ->
-            log.info("\tTransaction: {}", transaction.with().merge().as(Previewable.class).getPreview()));
+                log.info("\tTransaction: {}", transaction.with().merge().as(Previewable.class).getPreview()));
     }
 
 
@@ -250,5 +311,10 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
             log.warn("Generated Query: {}", ((Queryable) query).print());
         }
         return query;
+    }
+
+    @SneakyThrows
+    private void sleep(int interval) {
+        Thread.sleep(interval);
     }
 }

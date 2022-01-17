@@ -19,6 +19,7 @@ import java.time.OffsetDateTime;
 @Default("net.binis.example.db.entity.TransactionEntity")
 public interface Transaction extends BaseInterface, Taggable, Externalable<String>, Titleable, Descriptionable {
 
+    // region starters
     static Transaction.Modify create() {
         return (Transaction.Modify) EntityCreatorModifier.create(Transaction.class).with();
     }
@@ -26,6 +27,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     static QueryStarter<Transaction, Transaction.QuerySelect<Transaction>, QueryAggregateOperation<QueryOperationFields<Transaction.QueryAggregate<Number, Transaction.QuerySelect<Number>>>>, QueryFieldsStart<Transaction, Transaction.QuerySelect<Transaction>>> find() {
         return (QueryStarter) EntityCreator.create(Transaction.QuerySelect.class);
     }
+    // endregion
 
     Account getAccount();
     double getAmount();
@@ -35,6 +37,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
 
     Transaction.Modify with();
 
+    // region inner classes
     interface EmbeddedModify<T> extends Transaction.Fields<Transaction.EmbeddedModify<T>> {
         EmbeddedCodeCollection<EmbeddedModify<T>, Transaction, T> and();
     }
@@ -116,4 +119,5 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR> account();
         Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR> counterparty();
     }
+    // endregion
 }

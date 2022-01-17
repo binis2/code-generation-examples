@@ -7,7 +7,7 @@ import lombok.ToString;
 import net.binis.codegen.annotation.CodeConstant;
 import net.binis.codegen.annotation.CodePrototype;
 import net.binis.codegen.annotation.Ignore;
-import net.binis.codegen.spring.BaseEntityModifier;
+import net.binis.codegen.spring.AsyncEntityModifier;
 import net.binis.example.core.objects.base.Previewable;
 import net.binis.example.db.entity.AccountEntity;
 import net.binis.example.prototype.core.base.BaseEntityPrototype;
@@ -18,7 +18,7 @@ import java.util.List;
 @CodePrototype(
         interfaceSetters = false,
         implementationPackage = "net.binis.example.db.entity",
-        baseModifierClass = BaseEntityModifier.class)
+        baseModifierClass = AsyncEntityModifier.class)
 @Entity(name = UserEntityPrototype.TABLE_NAME)
 @Table(name = UserEntityPrototype.TABLE_NAME, indexes = {
         @Index(name = "idx_" + UserEntityPrototype.TABLE_NAME + "_username", columnList = "username")

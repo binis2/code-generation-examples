@@ -8,7 +8,7 @@ import net.binis.codegen.spring.query.executor.QueryOrderer;
 import net.binis.codegen.spring.query.executor.QueryExecutor;
 import net.binis.codegen.spring.query.base.BaseQueryNameImpl;
 import net.binis.codegen.spring.query.*;
-import net.binis.codegen.spring.BaseEntityModifier;
+import net.binis.codegen.spring.AsyncEntityModifier;
 import net.binis.codegen.modifier.Modifier;
 import net.binis.codegen.modifier.Modifiable;
 import net.binis.codegen.factory.CodeFactory;
@@ -33,9 +33,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = UserEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + UserEntity.TABLE_NAME + "_username", columnList = "username") })
 public class UserEntity extends BaseEntity implements User, Previewable, Modifiable<User.Modify> {
 
+    // region constants
     public static final String TABLE_NAME = "users";
 
     private static final long serialVersionUID = 8340909241398601047L;
+    // endregion
 
     @OneToMany(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -56,16 +58,20 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     @Column(unique = true)
     protected String username;
 
+    // region constructor & initializer
     {
         CodeFactory.registerType(User.QuerySelect.class, UserQueryExecutorImpl::new, null);
         CodeFactory.registerType(User.class, UserEntity::new, null);
         CodeFactory.registerType(User.QueryName.class, UserQueryNameImpl::new, null);
+        CodeFactory.registerId(User.class, "id", Long.class);
     }
 
     public UserEntity() {
         super();
     }
+    // endregion
 
+    // region getters
     @OneToMany(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonManagedReference
@@ -101,7 +107,9 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     public String getUsername() {
         return username;
     }
+    // endregion
 
+    // region setters
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
@@ -129,8 +137,10 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     public User.Modify with() {
         return new UserEntityModifyImpl();
     }
+    // endregion
 
-    protected class UserEntityModifyImpl extends BaseEntityModifier<User.Modify, User> implements User.Modify {
+    // region inner classes
+    protected class UserEntityModifyImpl extends AsyncEntityModifier<User.Modify, User> implements User.Modify {
 
         protected UserEntityModifyImpl() {
             setObject(UserEntity.this);
@@ -416,4 +426,5 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
             return executor.identifier("username", username);
         }
     }
+    // endregion
 }

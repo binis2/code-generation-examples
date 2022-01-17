@@ -43,9 +43,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @FilterDef(name = "timestampAfter", parameters = { @ParamDef(name = "startDate", type = "java.time.OffsetDateTime") }, defaultCondition = "timestamp >= :startDate")
 public class TransactionEntity extends BaseEntity implements Transaction, Previewable, Modifiable<Transaction.Modify> {
 
+    // region constants
     public static final String TABLE_NAME = "transactions";
 
     public static final long serialVersionUID = 2023385096577883838L;
+    // endregion
 
     @OneToOne(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
@@ -76,22 +78,28 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
     @Column(name = "transaction_type", nullable = false)
     protected TransactionType type;
 
+    // region constructor & initializer
     {
         CodeFactory.registerType(Transaction.QuerySelect.class, TransactionQueryExecutorImpl::new, null);
         CodeFactory.registerType(Transaction.class, TransactionEntity::new, (p, v) -> new EmbeddedTransactionEntityModifyImpl<>(p, (TransactionEntity) v));
         CodeFactory.registerType(Transaction.QueryName.class, TransactionQueryNameImpl::new, null);
         CodeFactory.registerType(Transaction.QueryOrder.class, () -> Transaction.find().aggregate(), null);
+        CodeFactory.registerId(Transaction.class, "id", Long.class);
     }
 
     public TransactionEntity() {
         super();
     }
+    // endregion
 
+    // region getters
     @Transient
     public String getPreview() {
         return this.timestamp.format(DateTimeFormatter.ISO_OFFSET_DATE) + " (" + this.title + " for $" + this.amount + ")" + " -> account: " + (Objects.nonNull(this.account) ? ((Previewable) this.account).getPreview() : "no account");
     }
+    // endregion
 
+    // region setters
     public void setTimestamp(OffsetDateTime timestamp) {
         Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> this.timestamp = v);
     }
@@ -107,7 +115,9 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
     public Transaction.Modify with() {
         return new TransactionEntityModifyImpl();
     }
+    // endregion
 
+    // region inner classes
     protected static class EmbeddedTransactionEntityModifyImpl<T> extends BaseEntityModifier<Transaction.Modify, Transaction> implements Transaction.EmbeddedModify<T> {
 
         protected TransactionEntity entity;
@@ -545,4 +555,5 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
             return executor.identifier("type", type);
         }
     }
+    // endregion
 }

@@ -19,6 +19,7 @@ import java.time.OffsetDateTime;
 @Default("net.binis.example.db.entity.AccountEntity")
 public interface Account extends BaseInterface, Typeable<AccountType>, Externalable<String>, Userable, Nameable, Descriptionable {
 
+    // region starters
     static Account.Modify create() {
         return (Account.Modify) EntityCreatorModifier.create(Account.class).with();
     }
@@ -26,6 +27,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     static QueryStarter<Account, Account.QuerySelect<Account>, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>>, QueryFieldsStart<Account, Account.QuerySelect<Account>>> find() {
         return (QueryStarter) EntityCreator.create(Account.QuerySelect.class);
     }
+    // endregion
 
     String getAccountNumber();
     double getAvailable();
@@ -37,6 +39,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
 
     Account.Modify with();
 
+    // region inner classes
     interface EmbeddedModify<T> extends Account.Fields<Account.EmbeddedModify<T>> {
         EmbeddedCodeCollection<EmbeddedModify<T>, Account, T> and();
         EmbeddedModify<T> transactions(List<Transaction> transactions);
@@ -127,4 +130,5 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         QueryJoinCollectionFunctions<Transaction, QuerySelectOperation<Account.QuerySelect<QR>, QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>, QR>, QueryJoinAggregateOperation<Transaction.QueryOperationFields<Transaction.QueryAggregate<Number, Transaction.QuerySelect<Number>>>, Transaction.QuerySelect<Number>>> transactions();
         User.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR> user();
     }
+    // endregion
 }

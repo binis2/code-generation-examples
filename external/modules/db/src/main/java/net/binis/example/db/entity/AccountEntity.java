@@ -41,9 +41,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = AccountEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_account_number", columnList = "accountNumber"), @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_active", columnList = "active"), @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_external", columnList = "externalId", unique = true) })
 public class AccountEntity extends BaseEntity implements Account, Previewable, Modifiable<Account.Modify> {
 
+    // region constants
     public static final String TABLE_NAME = "accounts";
 
     private static final long serialVersionUID = -640283484493905851L;
+    // endregion
 
     protected String accountNumber;
 
@@ -82,17 +84,21 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
     @JsonBackReference
     protected User user;
 
+    // region constructor & initializer
     {
         CodeFactory.registerType(Account.QuerySelect.class, AccountQueryExecutorImpl::new, null);
         CodeFactory.registerType(Account.class, AccountEntity::new, (p, v) -> new EmbeddedAccountEntityModifyImpl<>(p, (AccountEntity) v));
         CodeFactory.registerType(Account.QueryName.class, AccountQueryNameImpl::new, null);
         CodeFactory.registerType(Account.QueryOrder.class, () -> Account.find().aggregate(), null);
+        CodeFactory.registerId(Account.class, "id", Long.class);
     }
 
     public AccountEntity() {
         super();
     }
+    // endregion
 
+    // region getters
     @Transient
     public String getPreview() {
         return getName() + " [" + this.accountNumber + "] (user: " + (nonNull(this.user) ? this.user.getUsername() : "no user") + ")";
@@ -101,7 +107,9 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
     public Account.Modify with() {
         return new AccountEntityModifyImpl();
     }
+    // endregion
 
+    // region inner classes
     protected class AccountEntityModifyImpl extends BaseEntityModifier<Account.Modify, Account> implements Account.Modify {
 
         protected AccountEntityModifyImpl() {
@@ -605,4 +613,5 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
             return this;
         }
     }
+    // endregion
 }

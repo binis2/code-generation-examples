@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 @Default("net.binis.example.db.entity.UserEntity")
 public interface User extends BaseInterface {
 
+    // region starters
     static User.Modify create() {
         return (User.Modify) EntityCreatorModifier.create(User.class).with();
     }
@@ -24,6 +25,7 @@ public interface User extends BaseInterface {
     static QueryStarter<User, User.QuerySelect<User>, QueryAggregateOperation<QueryOperationFields<User.QueryAggregate<Number, User.QuerySelect<Number>>>>, QueryFieldsStart<User, User.QuerySelect<User>>> find() {
         return (QueryStarter) EntityCreator.create(User.QuerySelect.class);
     }
+    // endregion
 
     List<Account> getAccounts();
     String getEmail();
@@ -34,6 +36,7 @@ public interface User extends BaseInterface {
 
     User.Modify with();
 
+    // region inner classes
     interface Fields<T> extends BaseInterface.Fields<T> {
         T email(String email);
         T firstName(String firstName);
@@ -45,6 +48,7 @@ public interface User extends BaseInterface {
     interface Modify extends User.Fields<User.Modify> {
         Modify accounts(List<Account> accounts);
         EmbeddedCodeCollection<Account.EmbeddedModify<Account.Modify>, Account, Modify> accounts();
+        net.binis.codegen.spring.async.AsyncModifier<User.Modify> async();
         User delete();
         User detach();
         User done();
@@ -102,4 +106,5 @@ public interface User extends BaseInterface {
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<User.QueryName<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, User.QueryFields<QuerySelectOperation<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, User.QueryFuncs<QuerySelectOperation<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
         QueryJoinCollectionFunctions<Account, QuerySelectOperation<User.QuerySelect<QR>, QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>, QR>, QueryJoinAggregateOperation<Account.QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>, Account.QuerySelect<Number>>> accounts();
     }
+    // endregion
 }
