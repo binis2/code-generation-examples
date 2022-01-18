@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.Tuple;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static java.util.Objects.nonNull;
 
@@ -44,7 +45,6 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         showDownReferences();
         showDownAsync();
 
-        sleep(10000);
     }
 
     private void showDownBasics() {
@@ -254,22 +254,29 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
     }
 
+    @SneakyThrows
     private void showDownAsync() {
         log.info(DELIMITER);
         log.info("--- Async");
         log.info(DELIMITER);
 
         log.info("Simple async save:");
-        User.find().by().username("binis").ensure().with().modified(Time.now()).async().save();
+        var job1 = User.find().by().username("binis").ensure().with().modified(Time.now()).async().save();
         log.info("Note: In this case the query is executed in the main thread, just the save operation is done in another!");
         log.info("Note: You need to use AsyncEntityModifier as your base modifier class!");
 
         log.info("Async lambda:");
-        User.find().async(t -> {
-            t.by().username("binis").ensure().with().modified(Time.now()).save();
+        var job2 = User.find().async(t -> {
             log.info("Note: In this case everything is executed in different thread. Async also envelops the lambda with transaction!");
+            return t.by().username("binis").get();
         });
 
+        log.info("Now we wait!");
+        var time = System.currentTimeMillis();
+        CompletableFuture.allOf(job1, job2).join();
+        log.info("Done ({}) (Took {} ms.)!", job2.get(), System.currentTimeMillis() - time);
+        log.warn("WARNING: You can change the default thread pool executor with something like this - CodeExecutor.registerDefaultExecutor(CodeExecutor.syncExecutor());");
+        log.warn("WARNING: or change the thread pool executor per flow - CodeExecutor.registerExecutor(\"MySpecialFlow\", CodeExecutor.syncExecutor());");
     }
 
     private void printUser(User user) {

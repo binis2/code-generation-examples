@@ -1,17 +1,17 @@
 /*Generated code by Binis' code generator.*/
 package net.binis.example.core.objects;
 
-import net.binis.example.core.base.BaseInterface;
-import net.binis.codegen.spring.query.*;
-import net.binis.codegen.creator.EntityCreatorModifier;
-import net.binis.codegen.creator.EntityCreator;
-import net.binis.codegen.collection.EmbeddedCodeCollection;
 import net.binis.codegen.annotation.Default;
+import net.binis.codegen.collection.EmbeddedCodeCollection;
+import net.binis.codegen.creator.EntityCreator;
+import net.binis.codegen.creator.EntityCreatorModifier;
+import net.binis.codegen.spring.query.*;
+import net.binis.example.core.base.BaseInterface;
+
 import javax.annotation.processing.Generated;
-import java.util.function.Function;
-import java.util.Optional;
-import java.util.List;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.function.Function;
 
 @Generated(value = "UserEntityPrototype", comments = "UserEntity")
 @Default("net.binis.example.db.entity.UserEntity")
@@ -48,7 +48,7 @@ public interface User extends BaseInterface {
     interface Modify extends User.Fields<User.Modify> {
         Modify accounts(List<Account> accounts);
         EmbeddedCodeCollection<Account.EmbeddedModify<Account.Modify>, Account, Modify> accounts();
-        net.binis.codegen.spring.async.AsyncModifier<User.Modify> async();
+        net.binis.codegen.spring.async.AsyncModifier<User.Modify, User> async();
         User delete();
         User detach();
         User done();
