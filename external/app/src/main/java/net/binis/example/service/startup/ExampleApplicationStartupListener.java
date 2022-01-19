@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Tuple;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Objects.nonNull;
 
@@ -277,6 +278,25 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         log.info("Done ({}) (Took {} ms.)!", job2.get(), System.currentTimeMillis() - time);
         log.warn("WARNING: You can change the default thread pool executor with something like this - CodeExecutor.registerDefaultExecutor(CodeExecutor.syncExecutor());");
         log.warn("WARNING: or change the thread pool executor per flow - CodeExecutor.registerExecutor(\"MySpecialFlow\", CodeExecutor.syncExecutor());");
+
+        log.info("Lets repeat it with a little twist!");
+
+        log.info("Simple async save:");
+        job1 = User.find().by().username("binis").ensure().with().modified(Time.now()).async().flow("differentThreadExecutor").delay(5, TimeUnit.SECONDS).save();
+        log.info("Note: In this case the query is executed in the main thread, just the save operation is done in another!");
+        log.info("Note: You need to use AsyncEntityModifier as your base modifier class!");
+
+        log.info("Async lambda:");
+        job2 = User.find().async("differentThreadExecutor", 5, TimeUnit.SECONDS, t -> {
+            log.info("Note: In this case everything is executed in different thread. Async also envelops the lambda with transaction!");
+            return t.by().username("binis").get();
+        });
+
+        log.info("Wait again:");
+        time = System.currentTimeMillis();
+        CompletableFuture.allOf(job1, job2).join();
+        log.info("Done ({}) (Took {} ms.)!", job2.get(), System.currentTimeMillis() - time);
+
     }
 
     private void printUser(User user) {
