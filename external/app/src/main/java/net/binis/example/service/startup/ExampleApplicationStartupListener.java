@@ -43,8 +43,6 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         showDownProjections();
         showDownReferences();
         showDownAsync();
-
-        sleep(10000);
     }
 
     private void showDownBasics() {
@@ -313,8 +311,4 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         return query;
     }
 
-    @SneakyThrows
-    private void sleep(int interval) {
-        Thread.sleep(interval);
-    }
 }
