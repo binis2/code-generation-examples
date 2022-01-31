@@ -1,5 +1,6 @@
 package net.binis.example.service.startup;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.binis.codegen.spring.query.QueryProcessor;
 import net.binis.codegen.spring.query.Queryable;
