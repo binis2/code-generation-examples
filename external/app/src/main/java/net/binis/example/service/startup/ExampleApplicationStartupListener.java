@@ -1,6 +1,5 @@
 package net.binis.example.service.startup;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.binis.codegen.spring.query.QueryProcessor;
 import net.binis.codegen.spring.query.Queryable;
@@ -263,7 +262,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         log.info("Note: You need to use AsyncEntityModifier as your base modifier class!");
 
         log.info("Async lambda:");
-        User.find().async(t -> {
+        User.find().asyncC(t -> {
             t.by().username("binis").ensure().with().modified(Time.now()).save();
             log.info("Note: In this case everything is executed in different thread. Async also envelops the lambda with transaction!");
         });

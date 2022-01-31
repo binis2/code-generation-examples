@@ -91,9 +91,9 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         QueryFunctions<TransactionType, QR> type();
     }
 
-    interface QueryName<QS, QO, QR> extends Transaction.QueryFields<QuerySelectOperation<QS, QO, QR>>, Transaction.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>> {
-        Account.QueryName<QS, QO, QR> account();
-        Account.QueryName<QS, QO, QR> counterparty();
+    interface QueryName<QS, QO, QR, QF> extends Transaction.QueryFields<QuerySelectOperation<QS, QO, QR>>, Transaction.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>, QF> {
+        Account.QueryName<QS, QO, QR, Account> account();
+        Account.QueryName<QS, QO, QR, Account> counterparty();
     }
 
     interface QueryOperationFields<QR> extends QueryScript<QR> {
@@ -115,9 +115,9 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>, QueryExecute<QR>, QueryScript<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>> {
     }
 
-    interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Transaction.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, Transaction.QueryFields<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, Transaction.QueryFuncs<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
-        Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR> account();
-        Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR> counterparty();
+    interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Transaction.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR, Transaction>>, Transaction.QueryFields<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, Transaction.QueryFuncs<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
+        Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR, Account> account();
+        Account.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR, Account> counterparty();
     }
     // endregion
 }

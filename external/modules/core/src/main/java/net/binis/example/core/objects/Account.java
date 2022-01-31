@@ -101,8 +101,8 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         QueryFunctions<AccountType, QR> type();
     }
 
-    interface QueryName<QS, QO, QR> extends Account.QueryFields<QuerySelectOperation<QS, QO, QR>>, Account.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>> {
-        User.QueryName<QS, QO, QR> user();
+    interface QueryName<QS, QO, QR, QF> extends Account.QueryFields<QuerySelectOperation<QS, QO, QR>>, Account.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>, QF> {
+        User.QueryName<QS, QO, QR, User> user();
     }
 
     interface QueryOperationFields<QR> extends QueryScript<QR> {
@@ -126,9 +126,9 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>, QueryExecute<QR>, QueryScript<QueryOrderOperation<Account.QueryOrder<QR>, QR>> {
     }
 
-    interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Account.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, Account.QueryFields<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, Account.QueryFuncs<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
+    interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Account.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR, Account>>, Account.QueryFields<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, Account.QueryFuncs<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
         QueryJoinCollectionFunctions<Transaction, QuerySelectOperation<Account.QuerySelect<QR>, QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>, QR>, QueryJoinAggregateOperation<Transaction.QueryOperationFields<Transaction.QueryAggregate<Number, Transaction.QuerySelect<Number>>>, Transaction.QuerySelect<Number>>> transactions();
-        User.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR> user();
+        User.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR, User> user();
     }
     // endregion
 }
