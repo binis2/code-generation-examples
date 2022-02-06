@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<binis.version>0.1.8</binis.version>
+		<binis.version>0.1.9</binis.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
