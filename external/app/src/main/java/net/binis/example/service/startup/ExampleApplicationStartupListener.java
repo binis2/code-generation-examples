@@ -45,7 +45,6 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         showDownProjections();
         showDownReferences();
         showDownAsync();
-
     }
 
     private void showDownBasics() {

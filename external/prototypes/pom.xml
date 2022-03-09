@@ -38,23 +38,23 @@
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator</artifactId>
-            <version>0.1.9</version>
+            <version>0.1.13</version>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator-spring</artifactId>
-            <version>0.1.9</version>
+            <version>0.1.13</version>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generation-test</artifactId>
-            <version>0.1.9</version>
+            <version>0.1.13</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator-validation</artifactId>
-            <version>0.1.9</version>
+            <version>0.1.13</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.33</version>
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
