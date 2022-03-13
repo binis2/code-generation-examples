@@ -38,23 +38,23 @@
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator</artifactId>
-            <version>0.1.13</version>
+            <version>0.1.14</version>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator-spring</artifactId>
-            <version>0.1.13</version>
+            <version>0.1.14</version>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generation-test</artifactId>
-            <version>0.1.13</version>
+            <version>0.1.14</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator-validation</artifactId>
-            <version>0.1.13</version>
+            <version>0.1.14</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
