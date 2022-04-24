@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.binis.codegen.annotation.CodeClassAnnotations;
 import net.binis.codegen.annotation.CodePrototype;
 import net.binis.codegen.annotation.Default;
 import net.binis.codegen.annotation.Ignore;
@@ -82,6 +83,7 @@ public interface TransactionEntityPrototype extends BaseEntityPrototype, Taggabl
                 " -> account: " + (Objects.nonNull(account()) ? ((Previewable) account()).getPreview() : "no account");
     }
 
+    @CodeClassAnnotations
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(onlyExplicitlyIncluded = true)

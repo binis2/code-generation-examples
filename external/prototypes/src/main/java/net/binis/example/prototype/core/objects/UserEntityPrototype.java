@@ -2,8 +2,10 @@ package net.binis.example.prototype.core.objects;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.binis.codegen.annotation.CodeClassAnnotations;
 import net.binis.codegen.annotation.CodeConstant;
 import net.binis.codegen.annotation.CodePrototype;
 import net.binis.codegen.annotation.Ignore;
@@ -54,6 +56,8 @@ public interface UserEntityPrototype extends BaseEntityPrototype {
         return username() + " (" + firstName() + " " + lastName() + ")";
     }
 
+    @CodeClassAnnotations
+    @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(onlyExplicitlyIncluded = true)
     abstract class ClassAnnotations extends BaseClassAnnotations implements Previewable {

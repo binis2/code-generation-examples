@@ -46,6 +46,7 @@ public interface User extends BaseInterface {
     }
 
     interface Modify extends User.Fields<User.Modify> {
+        User.Modify _if(boolean condition, java.util.function.Consumer<User.Modify> consumer);
         Modify accounts(List<Account> accounts);
         EmbeddedCodeCollection<Account.EmbeddedModify<Account.Modify>, Account, Modify> accounts();
         net.binis.codegen.spring.async.AsyncModifier<User.Modify, User> async();

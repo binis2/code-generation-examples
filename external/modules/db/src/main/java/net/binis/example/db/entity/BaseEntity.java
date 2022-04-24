@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Generated(value = "BaseEntityPrototype", comments = "BaseInterface")
-@ToString(onlyExplicitlyIncluded = true)
 @MappedSuperclass
 @Access(AccessType.FIELD)
 @EntityListeners(AuditingEntityListener.class)

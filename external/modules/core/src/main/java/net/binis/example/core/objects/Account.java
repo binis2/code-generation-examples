@@ -8,7 +8,7 @@ import net.binis.codegen.spring.query.*;
 import net.binis.codegen.creator.EntityCreatorModifier;
 import net.binis.codegen.creator.EntityCreator;
 import net.binis.codegen.collection.EmbeddedCodeCollection;
-import net.binis.codegen.annotation.Default;
+import net.binis.codegen.annotation.*;
 import javax.annotation.processing.Generated;
 import java.util.function.Function;
 import java.util.Optional;
@@ -41,6 +41,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
 
     // region inner classes
     interface EmbeddedModify<T> extends Account.Fields<Account.EmbeddedModify<T>> {
+        Account.Modify _if(boolean condition, java.util.function.Consumer<Account.Modify> consumer);
         EmbeddedCodeCollection<EmbeddedModify<T>, Account, T> and();
         EmbeddedModify<T> transactions(List<Transaction> transactions);
         EmbeddedCodeCollection<Transaction.EmbeddedModify<Transaction.Modify>, Transaction, Account.EmbeddedModify<T>> transactions();
@@ -60,6 +61,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     }
 
     interface Modify extends Account.Fields<Account.Modify> {
+        Account.Modify _if(boolean condition, java.util.function.Consumer<Account.Modify> consumer);
         Account delete();
         Account detach();
         Account done();

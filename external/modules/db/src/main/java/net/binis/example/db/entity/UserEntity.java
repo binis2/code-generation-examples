@@ -17,6 +17,7 @@ import net.binis.codegen.collection.EmbeddedCodeListImpl;
 import net.binis.codegen.collection.EmbeddedCodeCollection;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
+import lombok.Data;
 import javax.persistence.*;
 import javax.annotation.processing.Generated;
 import java.util.function.Function;
@@ -27,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Generated(value = "UserEntityPrototype", comments = "User")
+@Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = UserEntity.TABLE_NAME)

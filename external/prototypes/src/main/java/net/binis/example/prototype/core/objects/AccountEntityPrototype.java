@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import net.binis.codegen.annotation.CodeConstant;
-import net.binis.codegen.annotation.CodePrototype;
-import net.binis.codegen.annotation.Default;
-import net.binis.codegen.annotation.Ignore;
+import net.binis.codegen.annotation.*;
 import net.binis.codegen.spring.BaseEntityModifier;
 import net.binis.example.core.objects.base.*;
 import net.binis.example.core.objects.types.AccountType;
@@ -81,6 +78,7 @@ public interface AccountEntityPrototype extends BaseEntityPrototype, Typeable<Ac
         return getName() + " [" + accountNumber() + "] (user: " + (nonNull(user()) ? user().username() : "no user") + ")" ;
     }
 
+    @CodeClassAnnotations
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(onlyExplicitlyIncluded = true)

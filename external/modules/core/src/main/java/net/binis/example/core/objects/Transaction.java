@@ -39,6 +39,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
 
     // region inner classes
     interface EmbeddedModify<T> extends Transaction.Fields<Transaction.EmbeddedModify<T>> {
+        Transaction.Modify _if(boolean condition, java.util.function.Consumer<Transaction.Modify> consumer);
         EmbeddedCodeCollection<EmbeddedModify<T>, Transaction, T> and();
     }
 
@@ -55,6 +56,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     }
 
     interface Modify extends Transaction.Fields<Transaction.Modify> {
+        Transaction.Modify _if(boolean condition, java.util.function.Consumer<Transaction.Modify> consumer);
         Transaction delete();
         Transaction detach();
         Transaction done();
