@@ -231,14 +231,20 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
         log.info("Multiple aggregations:");
         Account.find().aggregate()
-                .distinct().active().and()
+                .group().active().and()
                 .min().available().and()
                 .max().available().and()
                 .sum().available().and()
-                .avg().available().where().active(true).tuples().forEach(this::printTuple);
+                .avg().available().where().balance().greater(0.0).tuples().forEach(this::printTuple);
 
+        log.info("Aggregations and tuples:");
         Account.find().aggregate()
-                .distinct().active().tuples().forEach(this::printTuple);
+                .group().active().and().cnt().active().tuples().forEach(this::printTuple);
+
+        log.info("Entities aggregations:");
+        Transaction.find().aggregate()
+                .distinct().account().where().account().join().and().account().user().fetch().list(Account.class).forEach(this::printAccountSimple);
+
     }
 
     private void showDownReferences() {
