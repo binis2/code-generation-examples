@@ -15,7 +15,7 @@
     <description>Prototype objects for Binis-CodeGen-Example</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>18</java.version>
     </properties>
 
     <dependencies>

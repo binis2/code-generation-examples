@@ -14,7 +14,7 @@
 	<description>Example service for Binis CodeGen library</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>18</java.version>
 		<binis.version>0.2.0</binis.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
