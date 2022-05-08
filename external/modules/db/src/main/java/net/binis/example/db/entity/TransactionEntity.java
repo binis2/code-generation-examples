@@ -190,17 +190,17 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
 
         public T timestamp(OffsetDateTime timestamp) {
-            Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> TransactionEntity.this.timestamp = v);
+            Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> TransactionEntity.this.timestamp = v);
             return (T) this;
         }
 
         public T title(String title) {
-            Validation.start("title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
+            Validation.start("title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
             return (T) this;
         }
 
         public T type(TransactionType type) {
-            Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").validate(NullValidator.class, "'type' can't be null!").perform(v -> TransactionEntity.this.type = v);
+            Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> TransactionEntity.this.type = v);
             return (T) this;
         }
     }
