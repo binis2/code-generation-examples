@@ -8,7 +8,7 @@ import net.binis.codegen.annotation.CodeClassAnnotations;
 import net.binis.codegen.annotation.CodePrototype;
 import net.binis.codegen.annotation.Default;
 import net.binis.codegen.annotation.Ignore;
-import net.binis.codegen.spring.BaseEntityModifier;
+import net.binis.codegen.spring.modifier.BaseEntityModifier;
 import net.binis.codegen.validation.annotation.ValidateNotBlank;
 import net.binis.codegen.validation.annotation.ValidateNull;
 import net.binis.example.service.objects.base.*;

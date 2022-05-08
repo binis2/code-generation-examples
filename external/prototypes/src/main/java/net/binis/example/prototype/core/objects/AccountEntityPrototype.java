@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.binis.codegen.annotation.*;
-import net.binis.codegen.spring.BaseEntityModifier;
+import net.binis.codegen.spring.modifier.BaseEntityModifier;
 import net.binis.example.core.objects.base.*;
 import net.binis.example.core.objects.types.AccountType;
 import net.binis.example.prototype.core.base.BaseEntityPrototype;

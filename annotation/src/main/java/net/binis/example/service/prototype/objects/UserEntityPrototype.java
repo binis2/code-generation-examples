@@ -9,7 +9,7 @@ import net.binis.codegen.annotation.CodeClassAnnotations;
 import net.binis.codegen.annotation.CodeConstant;
 import net.binis.codegen.annotation.CodePrototype;
 import net.binis.codegen.annotation.Ignore;
-import net.binis.codegen.spring.AsyncEntityModifier;
+import net.binis.codegen.spring.modifier.AsyncEntityModifier;
 import net.binis.example.db.entity.AccountEntity;
 import net.binis.example.service.objects.base.Previewable;
 import net.binis.example.service.prototype.base.BaseEntityPrototype;

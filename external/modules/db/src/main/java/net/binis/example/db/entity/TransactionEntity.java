@@ -15,8 +15,7 @@ import net.binis.codegen.spring.query.executor.QueryOrderer;
 import net.binis.codegen.spring.query.executor.QueryExecutor;
 import net.binis.codegen.spring.query.base.BaseQueryNameImpl;
 import net.binis.codegen.spring.query.*;
-import net.binis.codegen.spring.BaseEntityModifier;
-import net.binis.codegen.modifier.Modifier;
+import net.binis.codegen.spring.modifier.impl.BaseEntityModifierImpl;
 import net.binis.codegen.modifier.Modifiable;
 import net.binis.codegen.factory.CodeFactory;
 import net.binis.codegen.creator.EntityCreator;
@@ -27,6 +26,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.annotation.processing.Generated;
 import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.Optional;
 import java.util.Objects;
 import java.util.List;
@@ -81,7 +81,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
     // region constructor & initializer
     {
         CodeFactory.registerType(Transaction.QuerySelect.class, TransactionQueryExecutorImpl::new, null);
-        CodeFactory.registerType(Transaction.class, TransactionEntity::new, (p, v) -> new EmbeddedTransactionEntityModifyImpl<>(p, (TransactionEntity) v));
+        CodeFactory.registerType(Transaction.class, TransactionEntity::new, (p, v) -> ((TransactionEntity) v).new TransactionEntityCollectionModifyImpl(p));
         CodeFactory.registerType(Transaction.QueryName.class, TransactionQueryNameImpl::new, null);
         CodeFactory.registerType(Transaction.QueryOrder.class, () -> Transaction.find().aggregate(), null);
         CodeFactory.registerId(Transaction.class, "id", Long.class);
@@ -113,144 +113,117 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
     }
 
     public Transaction.Modify with() {
-        return new TransactionEntityModifyImpl();
+        return new TransactionEntityModifyImpl(this);
     }
     // endregion
 
     // region inner classes
-    protected static class EmbeddedTransactionEntityModifyImpl<T> extends BaseEntityModifier<Transaction.Modify, Transaction> implements Transaction.EmbeddedModify<T> {
+    protected class TransactionEntityCollectionModifyImpl extends TransactionEntityEmbeddedModifyImpl implements Transaction.EmbeddedCollectionModify {
 
-        protected TransactionEntity entity;
-
-        protected T parent;
-
-        protected EmbeddedTransactionEntityModifyImpl(T parent, TransactionEntity entity) {
-            this.parent = parent;
-            this.entity = entity;
+        protected TransactionEntityCollectionModifyImpl(Object parent) {
+            super(parent);
         }
 
-        public Transaction.EmbeddedModify<T> account(Account account) {
-            entity.account = account;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> amount(double amount) {
-            entity.amount = amount;
-            return this;
-        }
-
-        public EmbeddedCodeCollection<Transaction.EmbeddedModify<T>, Transaction, T> and() {
+        public EmbeddedCodeCollection _and() {
             return (EmbeddedCodeCollection) parent;
-        }
-
-        public Transaction.EmbeddedModify<T> counterparty(Account counterparty) {
-            entity.counterparty = counterparty;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> description(String description) {
-            entity.description = description;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> externalId(String externalId) {
-            entity.externalId = externalId;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> id(Long id) {
-            entity.id = id;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> modified(OffsetDateTime modified) {
-            entity.modified = modified;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> tag(Object tag) {
-            entity.tag = tag;
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> timestamp(OffsetDateTime timestamp) {
-            Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> entity.timestamp = v);
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> title(String title) {
-            Validation.start("title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> entity.title = v);
-            return this;
-        }
-
-        public Transaction.EmbeddedModify<T> type(TransactionType type) {
-            Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> entity.type = v);
-            return this;
         }
     }
 
-    protected class TransactionEntityModifyImpl extends BaseEntityModifier<Transaction.Modify, Transaction> implements Transaction.Modify {
+    protected class TransactionEntityEmbeddedModifyImpl<T, R> extends BaseEntityModifierImpl<T, R> implements Transaction.EmbeddedModify<T, R> {
 
-        protected TransactionEntityModifyImpl() {
-            setObject(TransactionEntity.this);
+        protected TransactionEntityEmbeddedModifyImpl(R parent) {
+            super(parent);
         }
 
-        public Transaction.Modify account(Account account) {
+        public T account(Account account) {
             TransactionEntity.this.account = account;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify amount(double amount) {
+        public Account.EmbeddedSoloModify<EmbeddedModify<T, R>> account() {
+            if (TransactionEntity.this.account == null) {
+                TransactionEntity.this.account = CodeFactory.create(Account.class);
+            }
+            return CodeFactory.modify(this, TransactionEntity.this.account, Account.class);
+        }
+
+        public T amount(double amount) {
             TransactionEntity.this.amount = amount;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify counterparty(Account counterparty) {
+        public T counterparty(Account counterparty) {
             TransactionEntity.this.counterparty = counterparty;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify description(String description) {
+        public Account.EmbeddedSoloModify<EmbeddedModify<T, R>> counterparty() {
+            if (TransactionEntity.this.counterparty == null) {
+                TransactionEntity.this.counterparty = CodeFactory.create(Account.class);
+            }
+            return CodeFactory.modify(this, TransactionEntity.this.counterparty, Account.class);
+        }
+
+        public T description(String description) {
             TransactionEntity.this.description = description;
-            return this;
+            return (T) this;
         }
 
-        public Transaction done() {
-            return TransactionEntity.this;
-        }
-
-        public Transaction.Modify externalId(String externalId) {
+        public T externalId(String externalId) {
             TransactionEntity.this.externalId = externalId;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify id(Long id) {
+        public T id(Long id) {
             TransactionEntity.this.id = id;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify modified(OffsetDateTime modified) {
+        public T modified(OffsetDateTime modified) {
             TransactionEntity.this.modified = modified;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify tag(Object tag) {
+        public T tag(Object tag) {
             TransactionEntity.this.tag = tag;
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify timestamp(OffsetDateTime timestamp) {
+        public T timestamp(OffsetDateTime timestamp) {
             Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> TransactionEntity.this.timestamp = v);
-            return this;
+            return (T) this;
         }
 
-        public Transaction.Modify title(String title) {
+        public T title(String title) {
             Validation.start("title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
+            return (T) this;
+        }
+
+        public T type(TransactionType type) {
+            Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> TransactionEntity.this.type = v);
+            return (T) this;
+        }
+    }
+
+    protected class TransactionEntityModifyImpl extends TransactionEntityEmbeddedModifyImpl<Transaction.Modify, Transaction> implements Transaction.Modify {
+
+        protected TransactionEntityModifyImpl(Transaction parent) {
+            super(parent);
+        }
+
+        public Modify account(Consumer<Account.Modify> init) {
+            if (TransactionEntity.this.account == null) {
+                TransactionEntity.this.account = CodeFactory.create(Account.class);
+            }
+            init.accept(TransactionEntity.this.account.with());
             return this;
         }
 
-        public Transaction.Modify type(TransactionType type) {
-            Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> TransactionEntity.this.type = v);
+        public Modify counterparty(Consumer<Account.Modify> init) {
+            if (TransactionEntity.this.counterparty == null) {
+                TransactionEntity.this.counterparty = CodeFactory.create(Account.class);
+            }
+            init.accept(TransactionEntity.this.counterparty.with());
             return this;
         }
     }

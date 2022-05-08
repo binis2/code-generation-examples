@@ -3,12 +3,13 @@ package net.binis.example.core.objects;
 
 import net.binis.example.core.base.BaseInterface;
 import net.binis.codegen.spring.query.*;
+import net.binis.codegen.spring.modifier.AsyncEntityModifier;
+import net.binis.codegen.modifier.BaseModifier;
 import net.binis.codegen.creator.EntityCreatorModifier;
 import net.binis.codegen.creator.EntityCreator;
 import net.binis.codegen.collection.EmbeddedCodeCollection;
 import net.binis.codegen.annotation.Default;
 import javax.annotation.processing.Generated;
-import java.util.function.Function;
 import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
@@ -37,6 +38,14 @@ public interface User extends BaseInterface {
     User.Modify with();
 
     // region inner classes
+    interface EmbeddedModify<T, R> extends BaseModifier<T, R>, User.Fields<T> {
+        T accounts(List<Account> accounts);
+        EmbeddedCodeCollection<Account.EmbeddedCollectionModify<User.EmbeddedModify<T, R>>, Account, User.EmbeddedModify<T, R>> accounts();
+    }
+
+    interface EmbeddedSoloModify<R> extends User.EmbeddedModify<User.EmbeddedSoloModify<R>, R> {
+    }
+
     interface Fields<T> extends BaseInterface.Fields<T> {
         T email(String email);
         T firstName(String firstName);
@@ -45,19 +54,7 @@ public interface User extends BaseInterface {
         T username(String username);
     }
 
-    interface Modify extends User.Fields<User.Modify> {
-        User.Modify _if(boolean condition, java.util.function.Consumer<User.Modify> consumer);
-        Modify accounts(List<Account> accounts);
-        EmbeddedCodeCollection<Account.EmbeddedModify<Account.Modify>, Account, Modify> accounts();
-        net.binis.codegen.spring.async.AsyncModifier<User.Modify, User> async();
-        User delete();
-        User detach();
-        User done();
-        User merge();
-        User refresh();
-        User save();
-        User saveAndFlush();
-        User transaction(Function<User.Modify, User> function);
+    interface Modify extends EmbeddedModify<User.Modify, User>, AsyncEntityModifier<User.Modify, User> {
     }
 
     interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<User.QueryAggregate<User, User.QuerySelect<Number>>>>> {

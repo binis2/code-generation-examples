@@ -5,12 +5,14 @@ import net.binis.example.core.objects.types.AccountType;
 import net.binis.example.core.objects.base.*;
 import net.binis.example.core.base.BaseInterface;
 import net.binis.codegen.spring.query.*;
+import net.binis.codegen.spring.modifier.BaseEntityModifier;
+import net.binis.codegen.modifier.BaseModifier;
 import net.binis.codegen.creator.EntityCreatorModifier;
 import net.binis.codegen.creator.EntityCreator;
 import net.binis.codegen.collection.EmbeddedCodeCollection;
 import net.binis.codegen.annotation.*;
 import javax.annotation.processing.Generated;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
@@ -40,11 +42,17 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     Account.Modify with();
 
     // region inner classes
-    interface EmbeddedModify<T> extends Account.Fields<Account.EmbeddedModify<T>> {
-        Account.Modify _if(boolean condition, java.util.function.Consumer<Account.Modify> consumer);
-        EmbeddedCodeCollection<EmbeddedModify<T>, Account, T> and();
-        EmbeddedModify<T> transactions(List<Transaction> transactions);
-        EmbeddedCodeCollection<Transaction.EmbeddedModify<Transaction.Modify>, Transaction, Account.EmbeddedModify<T>> transactions();
+    interface EmbeddedCollectionModify<R> extends Account.EmbeddedModify<Account.EmbeddedCollectionModify<R>, R> {
+        EmbeddedCodeCollection<Account.EmbeddedCollectionModify<R>, Account, R> _and();
+    }
+
+    interface EmbeddedModify<T, R> extends BaseModifier<T, R>, Account.Fields<T> {
+        T transactions(List<Transaction> transactions);
+        EmbeddedCodeCollection<Transaction.EmbeddedCollectionModify<Account.EmbeddedModify<T, R>>, Transaction, Account.EmbeddedModify<T, R>> transactions();
+        User.EmbeddedSoloModify<EmbeddedModify<T, R>> user();
+    }
+
+    interface EmbeddedSoloModify<R> extends Account.EmbeddedModify<Account.EmbeddedSoloModify<R>, R> {
     }
 
     interface Fields<T> extends BaseInterface.Fields<T> {
@@ -60,18 +68,8 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         T user(User user);
     }
 
-    interface Modify extends Account.Fields<Account.Modify> {
-        Account.Modify _if(boolean condition, java.util.function.Consumer<Account.Modify> consumer);
-        Account delete();
-        Account detach();
-        Account done();
-        Account merge();
-        Account refresh();
-        Account save();
-        Account saveAndFlush();
-        Account transaction(Function<Account.Modify, Account> function);
-        Modify transactions(List<Transaction> transactions);
-        EmbeddedCodeCollection<Transaction.EmbeddedModify<Transaction.Modify>, Transaction, Modify> transactions();
+    interface Modify extends EmbeddedModify<Account.Modify, Account>, BaseEntityModifier<Account.Modify, Account> {
+        Modify user(Consumer<User.Modify> init);
     }
 
     interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Account, Account.QuerySelect<Number>>>>> {

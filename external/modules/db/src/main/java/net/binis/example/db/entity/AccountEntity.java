@@ -12,8 +12,7 @@ import net.binis.codegen.spring.query.executor.QueryOrderer;
 import net.binis.codegen.spring.query.executor.QueryExecutor;
 import net.binis.codegen.spring.query.base.BaseQueryNameImpl;
 import net.binis.codegen.spring.query.*;
-import net.binis.codegen.spring.BaseEntityModifier;
-import net.binis.codegen.modifier.Modifier;
+import net.binis.codegen.spring.modifier.impl.BaseEntityModifierImpl;
 import net.binis.codegen.modifier.Modifiable;
 import net.binis.codegen.factory.CodeFactory;
 import net.binis.codegen.creator.EntityCreator;
@@ -25,6 +24,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.annotation.processing.Generated;
 import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.Optional;
 import static java.util.Objects.nonNull;
 import java.util.List;
@@ -87,7 +87,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
     // region constructor & initializer
     {
         CodeFactory.registerType(Account.QuerySelect.class, AccountQueryExecutorImpl::new, null);
-        CodeFactory.registerType(Account.class, AccountEntity::new, (p, v) -> new EmbeddedAccountEntityModifyImpl<>(p, (AccountEntity) v));
+        CodeFactory.registerType(Account.class, AccountEntity::new, (p, v) -> p instanceof EmbeddedCodeCollection ? ((AccountEntity) v).new AccountEntityCollectionModifyImpl(p) : ((AccountEntity) v).new AccountEntitySoloModifyImpl(p));
         CodeFactory.registerType(Account.QueryName.class, AccountQueryNameImpl::new, null);
         CodeFactory.registerType(Account.QueryOrder.class, () -> Account.find().aggregate(), null);
         CodeFactory.registerId(Account.class, "id", Long.class);
@@ -105,91 +105,127 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
     }
 
     public Account.Modify with() {
-        return new AccountEntityModifyImpl();
+        return new AccountEntityModifyImpl(this);
     }
     // endregion
 
     // region inner classes
-    protected class AccountEntityModifyImpl extends BaseEntityModifier<Account.Modify, Account> implements Account.Modify {
+    protected class AccountEntityCollectionModifyImpl extends AccountEntityEmbeddedModifyImpl implements Account.EmbeddedCollectionModify {
 
-        protected AccountEntityModifyImpl() {
-            setObject(AccountEntity.this);
+        protected AccountEntityCollectionModifyImpl(Object parent) {
+            super(parent);
         }
 
-        public Account.Modify accountNumber(String accountNumber) {
+        public EmbeddedCodeCollection _and() {
+            return (EmbeddedCodeCollection) parent;
+        }
+    }
+
+    protected class AccountEntityEmbeddedModifyImpl<T, R> extends BaseEntityModifierImpl<T, R> implements Account.EmbeddedModify<T, R> {
+
+        protected AccountEntityEmbeddedModifyImpl(R parent) {
+            super(parent);
+        }
+
+        public T accountNumber(String accountNumber) {
             AccountEntity.this.accountNumber = accountNumber;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify active(boolean active) {
+        public T active(boolean active) {
             AccountEntity.this.active = active;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify available(double available) {
+        public T available(double available) {
             AccountEntity.this.available = available;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify balance(double balance) {
+        public T balance(double balance) {
             AccountEntity.this.balance = balance;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify description(String description) {
+        public T description(String description) {
             AccountEntity.this.description = description;
-            return this;
+            return (T) this;
         }
 
-        public Account done() {
-            return AccountEntity.this;
-        }
-
-        public Account.Modify externalId(String externalId) {
+        public T externalId(String externalId) {
             AccountEntity.this.externalId = externalId;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify id(Long id) {
+        public T id(Long id) {
             AccountEntity.this.id = id;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify modified(OffsetDateTime modified) {
+        public T modified(OffsetDateTime modified) {
             AccountEntity.this.modified = modified;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify name(String name) {
+        public T name(String name) {
             AccountEntity.this.name = name;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify pending(double pending) {
+        public T pending(double pending) {
             AccountEntity.this.pending = pending;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify transactions(List<Transaction> transactions) {
+        public T transactions(List<Transaction> transactions) {
             AccountEntity.this.transactions = transactions;
-            return this;
+            return (T) this;
         }
 
-        public EmbeddedCodeCollection<Transaction.EmbeddedModify<Transaction.Modify>, Transaction, Account.Modify> transactions() {
+        public EmbeddedCodeCollection transactions() {
             if (AccountEntity.this.transactions == null) {
                 AccountEntity.this.transactions = new java.util.ArrayList<>();
             }
             return new EmbeddedCodeListImpl<>(this, AccountEntity.this.transactions, Transaction.class);
         }
 
-        public Account.Modify type(AccountType type) {
+        public T type(AccountType type) {
             AccountEntity.this.type = type;
-            return this;
+            return (T) this;
         }
 
-        public Account.Modify user(User user) {
+        public T user(User user) {
             AccountEntity.this.user = user;
+            return (T) this;
+        }
+
+        public User.EmbeddedSoloModify<EmbeddedModify<T, R>> user() {
+            if (AccountEntity.this.user == null) {
+                AccountEntity.this.user = CodeFactory.create(User.class);
+            }
+            return CodeFactory.modify(this, AccountEntity.this.user, User.class);
+        }
+    }
+
+    protected class AccountEntityModifyImpl extends AccountEntityEmbeddedModifyImpl<Account.Modify, Account> implements Account.Modify {
+
+        protected AccountEntityModifyImpl(Account parent) {
+            super(parent);
+        }
+
+        public Modify user(Consumer<User.Modify> init) {
+            if (AccountEntity.this.user == null) {
+                AccountEntity.this.user = CodeFactory.create(User.class);
+            }
+            init.accept(AccountEntity.this.user.with());
             return this;
+        }
+    }
+
+    protected class AccountEntitySoloModifyImpl extends AccountEntityEmbeddedModifyImpl implements Account.EmbeddedSoloModify {
+
+        protected AccountEntitySoloModifyImpl(Object parent) {
+            super(parent);
         }
     }
 
@@ -523,94 +559,6 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
         public QuerySelectOperation user(User user) {
             return executor.identifier("user", user);
-        }
-    }
-
-    protected static class EmbeddedAccountEntityModifyImpl<T> extends BaseEntityModifier<Account.Modify, Account> implements Account.EmbeddedModify<T> {
-
-        protected AccountEntity entity;
-
-        protected T parent;
-
-        protected EmbeddedAccountEntityModifyImpl(T parent, AccountEntity entity) {
-            this.parent = parent;
-            this.entity = entity;
-        }
-
-        public Account.EmbeddedModify<T> accountNumber(String accountNumber) {
-            entity.accountNumber = accountNumber;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> active(boolean active) {
-            entity.active = active;
-            return this;
-        }
-
-        public EmbeddedCodeCollection<Account.EmbeddedModify<T>, Account, T> and() {
-            return (EmbeddedCodeCollection) parent;
-        }
-
-        public Account.EmbeddedModify<T> available(double available) {
-            entity.available = available;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> balance(double balance) {
-            entity.balance = balance;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> description(String description) {
-            entity.description = description;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> externalId(String externalId) {
-            entity.externalId = externalId;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> id(Long id) {
-            entity.id = id;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> modified(OffsetDateTime modified) {
-            entity.modified = modified;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> name(String name) {
-            entity.name = name;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> pending(double pending) {
-            entity.pending = pending;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> transactions(List<Transaction> transactions) {
-            entity.transactions = transactions;
-            return this;
-        }
-
-        public EmbeddedCodeCollection<Transaction.EmbeddedModify<Transaction.Modify>, Transaction, Account.EmbeddedModify<T>> transactions() {
-            if (entity.transactions != null) {
-                entity.transactions = new java.util.ArrayList<>();
-            }
-            return new EmbeddedCodeListImpl<>(this, entity.transactions, Transaction.class);
-        }
-
-        public Account.EmbeddedModify<T> type(AccountType type) {
-            entity.type = type;
-            return this;
-        }
-
-        public Account.EmbeddedModify<T> user(User user) {
-            entity.user = user;
-            return this;
         }
     }
     // endregion

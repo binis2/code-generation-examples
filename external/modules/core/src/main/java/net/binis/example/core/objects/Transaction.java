@@ -5,12 +5,14 @@ import net.binis.example.core.objects.types.TransactionType;
 import net.binis.example.core.objects.base.*;
 import net.binis.example.core.base.BaseInterface;
 import net.binis.codegen.spring.query.*;
+import net.binis.codegen.spring.modifier.BaseEntityModifier;
+import net.binis.codegen.modifier.BaseModifier;
 import net.binis.codegen.creator.EntityCreatorModifier;
 import net.binis.codegen.creator.EntityCreator;
 import net.binis.codegen.collection.EmbeddedCodeCollection;
 import net.binis.codegen.annotation.Default;
 import javax.annotation.processing.Generated;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
@@ -38,9 +40,13 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     Transaction.Modify with();
 
     // region inner classes
-    interface EmbeddedModify<T> extends Transaction.Fields<Transaction.EmbeddedModify<T>> {
-        Transaction.Modify _if(boolean condition, java.util.function.Consumer<Transaction.Modify> consumer);
-        EmbeddedCodeCollection<EmbeddedModify<T>, Transaction, T> and();
+    interface EmbeddedCollectionModify<R> extends Transaction.EmbeddedModify<Transaction.EmbeddedCollectionModify<R>, R> {
+        EmbeddedCodeCollection<Transaction.EmbeddedCollectionModify<R>, Transaction, R> _and();
+    }
+
+    interface EmbeddedModify<T, R> extends BaseModifier<T, R>, Transaction.Fields<T> {
+        Account.EmbeddedSoloModify<EmbeddedModify<T, R>> account();
+        Account.EmbeddedSoloModify<EmbeddedModify<T, R>> counterparty();
     }
 
     interface Fields<T> extends BaseInterface.Fields<T> {
@@ -55,16 +61,9 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         T type(TransactionType type);
     }
 
-    interface Modify extends Transaction.Fields<Transaction.Modify> {
-        Transaction.Modify _if(boolean condition, java.util.function.Consumer<Transaction.Modify> consumer);
-        Transaction delete();
-        Transaction detach();
-        Transaction done();
-        Transaction merge();
-        Transaction refresh();
-        Transaction save();
-        Transaction saveAndFlush();
-        Transaction transaction(Function<Transaction.Modify, Transaction> function);
+    interface Modify extends EmbeddedModify<Transaction.Modify, Transaction>, BaseEntityModifier<Transaction.Modify, Transaction> {
+        Modify account(Consumer<Account.Modify> init);
+        Modify counterparty(Consumer<Account.Modify> init);
     }
 
     interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Transaction.QueryAggregate<Transaction, Transaction.QuerySelect<Number>>>>> {

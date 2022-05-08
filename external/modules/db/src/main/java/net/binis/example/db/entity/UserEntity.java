@@ -8,8 +8,7 @@ import net.binis.codegen.spring.query.executor.QueryOrderer;
 import net.binis.codegen.spring.query.executor.QueryExecutor;
 import net.binis.codegen.spring.query.base.BaseQueryNameImpl;
 import net.binis.codegen.spring.query.*;
-import net.binis.codegen.spring.AsyncEntityModifier;
-import net.binis.codegen.modifier.Modifier;
+import net.binis.codegen.spring.modifier.impl.AsyncEntityModifierImpl;
 import net.binis.codegen.modifier.Modifiable;
 import net.binis.codegen.factory.CodeFactory;
 import net.binis.codegen.creator.EntityCreator;
@@ -63,7 +62,7 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     // region constructor & initializer
     {
         CodeFactory.registerType(User.QuerySelect.class, UserQueryExecutorImpl::new, null);
-        CodeFactory.registerType(User.class, UserEntity::new, null);
+        CodeFactory.registerType(User.class, UserEntity::new, (p, v) -> ((UserEntity) v).new UserEntitySoloModifyImpl(p));
         CodeFactory.registerType(User.QueryName.class, UserQueryNameImpl::new, null);
         CodeFactory.registerId(User.class, "id", Long.class);
     }
@@ -137,66 +136,76 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     }
 
     public User.Modify with() {
-        return new UserEntityModifyImpl();
+        return new UserEntityModifyImpl(this);
     }
     // endregion
 
     // region inner classes
-    protected class UserEntityModifyImpl extends AsyncEntityModifier<User.Modify, User> implements User.Modify {
+    protected class UserEntityEmbeddedModifyImpl<T, R> extends AsyncEntityModifierImpl<T, R> implements User.EmbeddedModify<T, R> {
 
-        protected UserEntityModifyImpl() {
-            setObject(UserEntity.this);
+        protected UserEntityEmbeddedModifyImpl(R parent) {
+            super(parent);
         }
 
-        public User.Modify accounts(List<Account> accounts) {
+        public T accounts(List<Account> accounts) {
             UserEntity.this.accounts = accounts;
-            return this;
+            return (T) this;
         }
 
-        public EmbeddedCodeCollection<Account.EmbeddedModify<Account.Modify>, Account, User.Modify> accounts() {
+        public EmbeddedCodeCollection accounts() {
             if (UserEntity.this.accounts == null) {
                 UserEntity.this.accounts = new java.util.ArrayList<>();
             }
             return new EmbeddedCodeListImpl<>(this, UserEntity.this.accounts, Account.class);
         }
 
-        public User done() {
-            return UserEntity.this;
-        }
-
-        public User.Modify email(String email) {
+        public T email(String email) {
             UserEntity.this.email = email;
-            return this;
+            return (T) this;
         }
 
-        public User.Modify firstName(String firstName) {
+        public T firstName(String firstName) {
             UserEntity.this.firstName = firstName;
-            return this;
+            return (T) this;
         }
 
-        public User.Modify id(Long id) {
+        public T id(Long id) {
             UserEntity.this.id = id;
-            return this;
+            return (T) this;
         }
 
-        public User.Modify lastName(String lastName) {
+        public T lastName(String lastName) {
             UserEntity.this.lastName = lastName;
-            return this;
+            return (T) this;
         }
 
-        public User.Modify modified(OffsetDateTime modified) {
+        public T modified(OffsetDateTime modified) {
             UserEntity.this.modified = modified;
-            return this;
+            return (T) this;
         }
 
-        public User.Modify password(String password) {
+        public T password(String password) {
             UserEntity.this.password = password;
-            return this;
+            return (T) this;
         }
 
-        public User.Modify username(String username) {
+        public T username(String username) {
             UserEntity.this.username = username;
-            return this;
+            return (T) this;
+        }
+    }
+
+    protected class UserEntityModifyImpl extends UserEntityEmbeddedModifyImpl<User.Modify, User> implements User.Modify {
+
+        protected UserEntityModifyImpl(User parent) {
+            super(parent);
+        }
+    }
+
+    protected class UserEntitySoloModifyImpl extends UserEntityEmbeddedModifyImpl implements User.EmbeddedSoloModify {
+
+        protected UserEntitySoloModifyImpl(Object parent) {
+            super(parent);
         }
     }
 
