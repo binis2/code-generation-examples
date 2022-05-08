@@ -1,5 +1,5 @@
 @ECHO OFF
-set MAVEN_OPTS=-Xmx2g -Xss1g -XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=1024M
+set MAVEN_OPTS=-Xmx2g -Xss1g -XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=1024M -XX:+CMSClassUnloadingEnabled
 
 cd prototypes
 call mvn clean install
