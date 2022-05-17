@@ -85,7 +85,7 @@ public interface User extends BaseInterface {
     interface QueryName<QS, QO, QR, QF> extends User.QueryFields<QuerySelectOperation<QS, QO, QR>>, User.QueryFuncs<QuerySelectOperation<QS, QO, QR>>, QueryFetch<QuerySelectOperation<QS, QO, QR>, QF> {
     }
 
-    interface QueryOperationFields<QR> extends QueryScript<QR> {
+    interface QueryOperationFields<QR> extends QueryScript<QR>, QuerySelf<QR> {
         QR created();
         QR createdBy();
         QR email();
@@ -98,7 +98,7 @@ public interface User extends BaseInterface {
         QR username();
     }
 
-    interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>, QueryExecute<QR>, QueryScript<QueryOrderOperation<User.QueryOrder<QR>, QR>> {
+    interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>, QueryExecute<QR> {
     }
 
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<User.QueryName<User.QuerySelect<QR>, User.QueryOrder<QR>, QR, User>>, User.QueryFields<QuerySelectOperation<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, User.QueryFuncs<QuerySelectOperation<User.QuerySelect<QR>, User.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<User.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {

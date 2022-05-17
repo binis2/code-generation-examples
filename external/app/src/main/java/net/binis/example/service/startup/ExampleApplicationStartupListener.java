@@ -243,7 +243,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
 
         log.info("Entities aggregations:");
         Transaction.find().aggregate()
-                .distinct().account().where().account().join().and().account().user().fetch().list(Account.class).forEach(this::printAccountSimple);
+                .distinct().account()._self().where().account().join().and().account().user().fetch().list(Account.class).forEach(this::printAccountSimple);
 
     }
 

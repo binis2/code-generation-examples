@@ -61,9 +61,10 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
 
     // region constructor & initializer
     {
-        CodeFactory.registerType(User.QuerySelect.class, UserQueryExecutorImpl::new, null);
         CodeFactory.registerType(User.class, UserEntity::new, (p, v) -> ((UserEntity) v).new UserEntitySoloModifyImpl(p));
         CodeFactory.registerType(User.QueryName.class, UserQueryNameImpl::new, null);
+        CodeFactory.registerType(User.QuerySelect.class, UserQueryExecutorImpl::new, null);
+        CodeFactory.registerType(User.QueryOperationFields.class, UserQueryExecutorImpl::new, null);
         CodeFactory.registerId(User.class, "id", Long.class);
     }
 
@@ -212,7 +213,7 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     protected static class UserQueryExecutorImpl extends QueryExecutor implements User.QuerySelect, User.QueryFieldsStart {
 
         protected UserQueryExecutorImpl() {
-            super(User.class, () -> new UserQueryNameImpl());
+            super(User.class, () -> new UserQueryNameImpl(), parent -> parent);
         }
 
         public QueryJoinCollectionFunctions accounts() {

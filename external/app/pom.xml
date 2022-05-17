@@ -18,8 +18,8 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<postgresql.version>42.3.1</postgresql.version>
-		<spring-security.version>5.5.2</spring-security.version>
+		<postgresql.version>42.3.4</postgresql.version>
+		<spring-security.version>5.6.3</spring-security.version>
 
 		<main-class>net.binis.example.service.AnnotationExampleApplication</main-class>
 	</properties>
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>dev.binis</groupId>
 			<artifactId>code-generation-test</artifactId>
-			<version>0.2.0</version>
+			<version>0.2.1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>

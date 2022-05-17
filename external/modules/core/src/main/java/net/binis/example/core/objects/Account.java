@@ -105,7 +105,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         User.QueryName<QS, QO, QR, User> user();
     }
 
-    interface QueryOperationFields<QR> extends QueryScript<QR> {
+    interface QueryOperationFields<QR> extends QueryScript<QR>, QuerySelf<QR> {
         QR accountNumber();
         QR active();
         QR available();
@@ -120,10 +120,10 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         QR name();
         QR pending();
         QR type();
-        QR user();
+        User.QueryOperationFields<QR> user();
     }
 
-    interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>, QueryExecute<QR>, QueryScript<QueryOrderOperation<Account.QueryOrder<QR>, QR>> {
+    interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>, QueryExecute<QR> {
     }
 
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Account.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR, Account>>, Account.QueryFields<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, Account.QueryFuncs<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
