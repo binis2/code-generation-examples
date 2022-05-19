@@ -86,9 +86,10 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
     // region constructor & initializer
     {
-        CodeFactory.registerType(Account.QuerySelect.class, AccountQueryExecutorImpl::new, null);
         CodeFactory.registerType(Account.class, AccountEntity::new, (p, v) -> p instanceof EmbeddedCodeCollection ? ((AccountEntity) v).new AccountEntityCollectionModifyImpl(p) : ((AccountEntity) v).new AccountEntitySoloModifyImpl(p));
         CodeFactory.registerType(Account.QueryName.class, AccountQueryNameImpl::new, null);
+        CodeFactory.registerType(Account.QuerySelect.class, AccountSelectQueryExecutorImpl::new, null);
+        CodeFactory.registerType(Account.QueryOperationFields.class, AccountFieldsQueryExecutorImpl::new, null);
         CodeFactory.registerType(Account.QueryOrder.class, () -> Account.find().aggregate(), null);
         CodeFactory.registerId(Account.class, "id", Long.class);
     }
@@ -229,10 +230,23 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
-    protected static class AccountQueryExecutorImpl extends QueryExecutor implements Account.QuerySelect, Account.QueryFieldsStart {
+    protected static class AccountFieldsQueryExecutorImpl extends AccountQueryExecutorImpl implements Account.QueryFieldsStart, EmbeddedFields {
+
+        public User.QueryOperationFields user() {
+            var result = EntityCreator.create(User.QueryOperationFields.class, "net.binis.example.db.entity.UserEntity");
+            ((QueryEmbed) result).setParent("user", this);
+            return result;
+        }
+    }
+
+    protected static abstract class AccountQueryExecutorImpl extends QueryExecutor {
 
         protected AccountQueryExecutorImpl() {
-            super(Account.class, () -> new AccountQueryNameImpl());
+            super(Account.class, () -> new AccountQueryNameImpl(), parent -> {
+                var result = new AccountFieldsQueryExecutorImpl();
+                result.parent = (QueryExecutor) parent;
+                return result;
+            });
         }
 
         public QuerySelectOperation accountNumber(String accountNumber) {
@@ -363,12 +377,6 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
             return identifier("user", user);
         }
 
-        public User.QueryName user() {
-            var result = EntityCreator.create(User.QueryName.class, "net.binis.example.db.entity.UserEntity");
-            ((QueryEmbed) result).setParent("user", this);
-            return result;
-        }
-
         protected class AccountQueryOrderImpl extends QueryOrderer implements Account.QueryOrder, Account.QueryAggregate {
 
             protected AccountQueryOrderImpl(AccountQueryExecutorImpl executor, Function<String, Object> func) {
@@ -431,8 +439,10 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
                 return (QueryOrderOperation) func.apply("type");
             }
 
-            public QueryOrderOperation user() {
-                return (QueryOrderOperation) func.apply("user");
+            public User.QueryOperationFields user() {
+                var result = EntityCreator.create(User.QueryOperationFields.class, "net.binis.example.db.entity.UserEntity");
+                ((QueryEmbed) result).setParent("user", executor);
+                return result;
             }
         }
     }
@@ -559,6 +569,15 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
         public QuerySelectOperation user(User user) {
             return executor.identifier("user", user);
+        }
+    }
+
+    protected static class AccountSelectQueryExecutorImpl extends AccountQueryExecutorImpl implements Account.QuerySelect {
+
+        public User.QueryName user() {
+            var result = EntityCreator.create(User.QueryName.class, "net.binis.example.db.entity.UserEntity");
+            ((QueryEmbed) result).setParent("user", this);
+            return result;
         }
     }
     // endregion

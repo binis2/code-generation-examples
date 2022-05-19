@@ -80,9 +80,10 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
 
     // region constructor & initializer
     {
-        CodeFactory.registerType(Transaction.QuerySelect.class, TransactionQueryExecutorImpl::new, null);
         CodeFactory.registerType(Transaction.class, TransactionEntity::new, (p, v) -> ((TransactionEntity) v).new TransactionEntityCollectionModifyImpl(p));
         CodeFactory.registerType(Transaction.QueryName.class, TransactionQueryNameImpl::new, null);
+        CodeFactory.registerType(Transaction.QuerySelect.class, TransactionSelectQueryExecutorImpl::new, null);
+        CodeFactory.registerType(Transaction.QueryOperationFields.class, TransactionFieldsQueryExecutorImpl::new, null);
         CodeFactory.registerType(Transaction.QueryOrder.class, () -> Transaction.find().aggregate(), null);
         CodeFactory.registerId(Transaction.class, "id", Long.class);
     }
@@ -228,20 +229,33 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
-    protected static class TransactionQueryExecutorImpl extends QueryExecutor implements Transaction.QuerySelect, Transaction.QueryFieldsStart {
+    protected static class TransactionFieldsQueryExecutorImpl extends TransactionQueryExecutorImpl implements Transaction.QueryFieldsStart, EmbeddedFields {
+
+        public Account.QueryOperationFields account() {
+            var result = EntityCreator.create(Account.QueryOperationFields.class, "net.binis.example.db.entity.AccountEntity");
+            ((QueryEmbed) result).setParent("account", this);
+            return result;
+        }
+
+        public Account.QueryOperationFields counterparty() {
+            var result = EntityCreator.create(Account.QueryOperationFields.class, "net.binis.example.db.entity.AccountEntity");
+            ((QueryEmbed) result).setParent("counterparty", this);
+            return result;
+        }
+    }
+
+    protected static abstract class TransactionQueryExecutorImpl extends QueryExecutor {
 
         protected TransactionQueryExecutorImpl() {
-            super(Transaction.class, () -> new TransactionQueryNameImpl());
+            super(Transaction.class, () -> new TransactionQueryNameImpl(), parent -> {
+                var result = new TransactionFieldsQueryExecutorImpl();
+                result.parent = (QueryExecutor) parent;
+                return result;
+            });
         }
 
         public QuerySelectOperation account(Account account) {
             return identifier("account", account);
-        }
-
-        public Account.QueryName account() {
-            var result = EntityCreator.create(Account.QueryName.class, "net.binis.example.db.entity.AccountEntity");
-            ((QueryEmbed) result).setParent("account", this);
-            return result;
         }
 
         public QueryAggregateOperation aggregate() {
@@ -258,12 +272,6 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
 
         public QuerySelectOperation counterparty(Account counterparty) {
             return identifier("counterparty", counterparty);
-        }
-
-        public Account.QueryName counterparty() {
-            var result = EntityCreator.create(Account.QueryName.class, "net.binis.example.db.entity.AccountEntity");
-            ((QueryEmbed) result).setParent("counterparty", this);
-            return result;
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
@@ -360,16 +368,20 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
                 super(executor, func);
             }
 
-            public QueryOrderOperation account() {
-                return (QueryOrderOperation) func.apply("account");
+            public Account.QueryOperationFields account() {
+                var result = EntityCreator.create(Account.QueryOperationFields.class, "net.binis.example.db.entity.AccountEntity");
+                ((QueryEmbed) result).setParent("account", executor);
+                return result;
             }
 
             public QueryOrderOperation amount() {
                 return (QueryOrderOperation) func.apply("amount");
             }
 
-            public QueryOrderOperation counterparty() {
-                return (QueryOrderOperation) func.apply("counterparty");
+            public Account.QueryOperationFields counterparty() {
+                var result = EntityCreator.create(Account.QueryOperationFields.class, "net.binis.example.db.entity.AccountEntity");
+                ((QueryEmbed) result).setParent("counterparty", executor);
+                return result;
             }
 
             public QueryOrderOperation created() {
@@ -526,6 +538,21 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
 
         public QuerySelectOperation type(TransactionType type) {
             return executor.identifier("type", type);
+        }
+    }
+
+    protected static class TransactionSelectQueryExecutorImpl extends TransactionQueryExecutorImpl implements Transaction.QuerySelect {
+
+        public Account.QueryName account() {
+            var result = EntityCreator.create(Account.QueryName.class, "net.binis.example.db.entity.AccountEntity");
+            ((QueryEmbed) result).setParent("account", this);
+            return result;
+        }
+
+        public Account.QueryName counterparty() {
+            var result = EntityCreator.create(Account.QueryName.class, "net.binis.example.db.entity.AccountEntity");
+            ((QueryEmbed) result).setParent("counterparty", this);
+            return result;
         }
     }
     // endregion

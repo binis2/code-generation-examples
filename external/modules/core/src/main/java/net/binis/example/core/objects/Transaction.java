@@ -97,10 +97,10 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         Account.QueryName<QS, QO, QR, Account> counterparty();
     }
 
-    interface QueryOperationFields<QR> extends QueryScript<QR> {
-        QR account();
+    interface QueryOperationFields<QR> extends QueryScript<QR>, QuerySelf<QR> {
+        Account.QueryOperationFields<QR> account();
         QR amount();
-        QR counterparty();
+        Account.QueryOperationFields<QR> counterparty();
         QR created();
         QR createdBy();
         QR description();
@@ -113,7 +113,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         QR type();
     }
 
-    interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>, QueryExecute<QR>, QueryScript<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>> {
+    interface QueryOrder<QR> extends QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>, QueryExecute<QR> {
     }
 
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Transaction.QueryName<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR, Transaction>>, Transaction.QueryFields<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, Transaction.QueryFuncs<QuerySelectOperation<Transaction.QuerySelect<QR>, Transaction.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Transaction.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
