@@ -26,7 +26,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         return (Account.Modify) EntityCreatorModifier.create(Account.class).with();
     }
 
-    static QueryStarter<Account, Account.QuerySelect<Account>, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>>, QueryFieldsStart<Account, Account.QuerySelect<Account>>> find() {
+    static QueryStarter<Account, Account.QuerySelect<Account>, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>>, QueryFieldsStart<Account, Account.QuerySelect<Account>>, QueryUpdate<Account, Account.QuerySelect<Account>>> find() {
         return (QueryStarter) EntityCreator.create(Account.QuerySelect.class);
     }
     // endregion
@@ -129,6 +129,9 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     interface QuerySelect<QR> extends QueryExecute<QR>, QueryModifiers<Account.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR, Account>>, Account.QueryFields<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, Account.QueryFuncs<QuerySelectOperation<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR>>, QueryOrderStart<QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>>, QueryBracket<QuerySelect<QR>> {
         QueryJoinCollectionFunctions<Transaction, QuerySelectOperation<Account.QuerySelect<QR>, QueryOperationFields<QueryOrderOperation<Account.QueryOrder<QR>, QR>>, QR>, QueryJoinAggregateOperation<Transaction.QueryOperationFields<Transaction.QueryAggregate<Number, Transaction.QuerySelect<Number>>>, Transaction.QuerySelect<Number>>> transactions();
         User.QueryName<Account.QuerySelect<QR>, Account.QueryOrder<QR>, QR, User> user();
+    }
+
+    interface QueryUpdate<QR, QS> extends QueryFields<QueryUpdate<QR, QS>>, QueryWhere<QS>, QueryScript<QueryUpdate<QR, QS>>, UpdatableQuery {
     }
     // endregion
 }

@@ -210,7 +210,7 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         }
     }
 
-    protected static class UserQueryExecutorImpl extends QueryExecutor implements User.QuerySelect, User.QueryFieldsStart {
+    protected static class UserQueryExecutorImpl extends QueryExecutor implements User.QueryUpdate, User.QuerySelect, User.QueryFieldsStart {
 
         protected UserQueryExecutorImpl() {
             super(User.class, () -> new UserQueryNameImpl(), parent -> parent);
