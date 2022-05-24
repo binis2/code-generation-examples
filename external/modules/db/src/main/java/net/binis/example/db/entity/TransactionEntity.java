@@ -244,7 +244,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
-    protected static abstract class TransactionQueryExecutorImpl extends QueryExecutor {
+    protected static abstract class TransactionQueryExecutorImpl extends QueryExecutor implements Transaction.QueryUpdate {
 
         protected TransactionQueryExecutorImpl() {
             super(Transaction.class, () -> new TransactionQueryNameImpl(), parent -> {

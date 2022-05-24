@@ -239,7 +239,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
-    protected static abstract class AccountQueryExecutorImpl extends QueryExecutor {
+    protected static abstract class AccountQueryExecutorImpl extends QueryExecutor implements Account.QueryUpdate {
 
         protected AccountQueryExecutorImpl() {
             super(Account.class, () -> new AccountQueryNameImpl(), parent -> {

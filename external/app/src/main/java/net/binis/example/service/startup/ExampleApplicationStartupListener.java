@@ -20,6 +20,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Tuple;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -140,6 +141,8 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
                     .lastName("Smith")
                     .email("j.smith@binis.dev")
                     .save();
+        } else {
+            log.info("Update query example. Rows updated: {}", Account.find().update().modified(OffsetDateTime.now()).modifiedBy("binis").where().user(user).run());
         }
 
         log.info("Showcase of custom interface and implementation:");
