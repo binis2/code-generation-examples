@@ -64,7 +64,7 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         log.info("Update entity:");
         user.with().firstName("Binis").save();
 
-        if (!Account.find().by().user(user).exists()) {
+        //if (!Account.find().by().user(user).exists()) {
             log.info("Create entity:");
             var checking = Account.create()
                     .name("Checking account")
@@ -141,9 +141,9 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
                     .lastName("Smith")
                     .email("j.smith@binis.dev")
                     .save();
-        } else {
-            log.info("Update query example. Rows updated: {}", Account.find().update().modified(OffsetDateTime.now()).modifiedBy("binis").where().user(user).run());
-        }
+//        } else {
+//            log.info("Update query example. Rows updated: {}", Account.find().update().modified(OffsetDateTime.now()).modifiedBy("binis").where().user(user).run());
+//        }
 
         log.info("Showcase of custom interface and implementation:");
         log.info("(Note: Since we are accessing lazy collections we need transaction)");
