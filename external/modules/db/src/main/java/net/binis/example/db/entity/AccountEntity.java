@@ -200,7 +200,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
             return (T) this;
         }
 
-        public User.EmbeddedSoloModify<EmbeddedModify<T, R>> user() {
+        public User.EmbeddedSoloModify<Account.EmbeddedModify<T, R>> user() {
             if (AccountEntity.this.user == null) {
                 AccountEntity.this.user = CodeFactory.create(User.class);
             }
@@ -214,7 +214,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
             super(parent);
         }
 
-        public Modify user(Consumer<User.Modify> init) {
+        public Account.Modify user$(Consumer<User.Modify> init) {
             if (AccountEntity.this.user == null) {
                 AccountEntity.this.user = CodeFactory.create(User.class);
             }

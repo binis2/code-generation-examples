@@ -98,20 +98,6 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
     public String getPreview() {
         return this.timestamp.format(DateTimeFormatter.ISO_OFFSET_DATE) + " (" + this.title + " for $" + this.amount + ")" + " -> account: " + (Objects.nonNull(this.account) ? ((Previewable) this.account).getPreview() : "no account");
     }
-    // endregion
-
-    // region setters
-    public void setTimestamp(OffsetDateTime timestamp) {
-        Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> this.timestamp = v);
-    }
-
-    public void setTitle(String title) {
-        Validation.start("title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> this.title = v);
-    }
-
-    public void setType(TransactionType type) {
-        Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> this.type = v);
-    }
 
     public Transaction.Modify with() {
         return new TransactionEntityModifyImpl(this);
@@ -141,7 +127,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
             return (T) this;
         }
 
-        public Account.EmbeddedSoloModify<EmbeddedModify<T, R>> account() {
+        public Account.EmbeddedSoloModify<Transaction.EmbeddedModify<T, R>> account() {
             if (TransactionEntity.this.account == null) {
                 TransactionEntity.this.account = CodeFactory.create(Account.class);
             }
@@ -158,7 +144,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
             return (T) this;
         }
 
-        public Account.EmbeddedSoloModify<EmbeddedModify<T, R>> counterparty() {
+        public Account.EmbeddedSoloModify<Transaction.EmbeddedModify<T, R>> counterparty() {
             if (TransactionEntity.this.counterparty == null) {
                 TransactionEntity.this.counterparty = CodeFactory.create(Account.class);
             }
@@ -191,17 +177,17 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
 
         public T timestamp(OffsetDateTime timestamp) {
-            Validation.start("timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> TransactionEntity.this.timestamp = v);
+            Validation.start(this.getClass(), "timestamp", timestamp).validate(NullValidator.class, "'timestamp' can't be null!").perform(v -> TransactionEntity.this.timestamp = v);
             return (T) this;
         }
 
         public T title(String title) {
-            Validation.start("title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
+            Validation.start(this.getClass(), "title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
             return (T) this;
         }
 
         public T type(TransactionType type) {
-            Validation.start("type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> TransactionEntity.this.type = v);
+            Validation.start(this.getClass(), "type", type).validate(NullValidator.class, "'type' can't be null!").perform(v -> TransactionEntity.this.type = v);
             return (T) this;
         }
     }
@@ -212,7 +198,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
             super(parent);
         }
 
-        public Modify account(Consumer<Account.Modify> init) {
+        public Transaction.Modify account$(Consumer<Account.Modify> init) {
             if (TransactionEntity.this.account == null) {
                 TransactionEntity.this.account = CodeFactory.create(Account.class);
             }
@@ -220,7 +206,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
             return this;
         }
 
-        public Modify counterparty(Consumer<Account.Modify> init) {
+        public Transaction.Modify counterparty$(Consumer<Account.Modify> init) {
             if (TransactionEntity.this.counterparty == null) {
                 TransactionEntity.this.counterparty = CodeFactory.create(Account.class);
             }

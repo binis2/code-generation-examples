@@ -48,7 +48,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
 
     interface EmbeddedModify<T, R> extends BaseModifier<T, R>, Account.Fields<T> {
         T transactions(List<Transaction> transactions);
-        EmbeddedCodeCollection<Transaction.EmbeddedCollectionModify<Account.EmbeddedModify<T, R>>, Transaction, Account.EmbeddedModify<T, R>> transactions();
+        EmbeddedCodeCollection<Transaction.EmbeddedCollectionModify<Account.EmbeddedModify<T, R>>, Transaction, T> transactions();
         User.EmbeddedSoloModify<EmbeddedModify<T, R>> user();
     }
 
@@ -69,7 +69,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     }
 
     interface Modify extends EmbeddedModify<Account.Modify, Account>, BaseEntityModifier<Account.Modify, Account> {
-        Modify user(Consumer<User.Modify> init);
+        Modify user$(Consumer<User.Modify> init);
     }
 
     interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Account, Account.QuerySelect<Number>>>>> {
