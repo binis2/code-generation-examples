@@ -40,7 +40,7 @@ public interface User extends BaseInterface {
     // region inner classes
     interface EmbeddedModify<T, R> extends BaseModifier<T, R>, User.Fields<T> {
         T accounts(List<Account> accounts);
-        EmbeddedCodeCollection<Account.EmbeddedCollectionModify<User.EmbeddedModify<T, R>>, Account, User.EmbeddedModify<T, R>> accounts();
+        EmbeddedCodeCollection<Account.EmbeddedCollectionModify<User.EmbeddedModify<T, R>>, Account, T> accounts();
     }
 
     interface EmbeddedSoloModify<R> extends User.EmbeddedModify<User.EmbeddedSoloModify<R>, R> {
