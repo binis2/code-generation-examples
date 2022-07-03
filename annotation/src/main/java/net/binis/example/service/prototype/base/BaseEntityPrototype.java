@@ -69,7 +69,7 @@ public interface BaseEntityPrototype extends Serializable, Identifiable {
     String modifiedBy();
 
     @ToString(onlyExplicitlyIncluded = true)
-    static class BaseClassAnnotations {
+        class BaseClassAnnotations {
 
     }
 
