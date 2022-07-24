@@ -39,6 +39,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = AccountEntity.TABLE_NAME)
 @Table(name = AccountEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_account_number", columnList = "accountNumber"), @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_active", columnList = "active"), @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_external", columnList = "externalId", unique = true) })
+@SuppressWarnings(value = "unchecked")
 public class AccountEntity extends BaseEntity implements Account, Previewable, Modifiable<Account.Modify> {
 
     // region constants

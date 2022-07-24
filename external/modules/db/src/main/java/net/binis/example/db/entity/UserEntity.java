@@ -14,6 +14,7 @@ import net.binis.codegen.factory.CodeFactory;
 import net.binis.codegen.creator.EntityCreator;
 import net.binis.codegen.collection.EmbeddedCodeListImpl;
 import net.binis.codegen.collection.EmbeddedCodeCollection;
+import lombok.ToString.Include;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import lombok.Data;
@@ -32,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = UserEntity.TABLE_NAME)
 @Table(name = UserEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + UserEntity.TABLE_NAME + "_username", columnList = "username") })
+@SuppressWarnings(value = "unchecked")
 public class UserEntity extends BaseEntity implements User, Previewable, Modifiable<User.Modify> {
 
     // region constants

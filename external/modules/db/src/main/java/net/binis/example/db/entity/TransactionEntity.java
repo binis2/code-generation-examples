@@ -41,6 +41,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity(name = TransactionEntity.TABLE_NAME)
 @Table(name = TransactionEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_date", columnList = "timestamp"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_date_desc", columnList = "timestamp DESC"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_transaction_type", columnList = "transaction_type"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_external_id", columnList = "externalId") })
 @FilterDef(name = "timestampAfter", parameters = { @ParamDef(name = "startDate", type = "java.time.OffsetDateTime") }, defaultCondition = "timestamp >= :startDate")
+@SuppressWarnings(value = "unchecked")
 public class TransactionEntity extends BaseEntity implements Transaction, Previewable, Modifiable<Transaction.Modify> {
 
     // region constants
@@ -116,6 +117,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
+    @SuppressWarnings(value = "unchecked")
     protected class TransactionEntityEmbeddedModifyImpl<T, R> extends BaseEntityModifierImpl<T, R> implements Transaction.EmbeddedModify<T, R> {
 
         protected TransactionEntityEmbeddedModifyImpl(R parent) {

@@ -22,10 +22,12 @@ import java.time.OffsetDateTime;
 public interface Transaction extends BaseInterface, Taggable, Externalable<String>, Titleable, Descriptionable {
 
     // region starters
+    @SuppressWarnings(value = "unchecked")
     static Transaction.Modify create() {
         return (Transaction.Modify) EntityCreatorModifier.create(Transaction.class).with();
     }
 
+    @SuppressWarnings(value = "unchecked")
     static QueryStarter<Transaction, Transaction.QuerySelect<Transaction>, QueryAggregateOperation<QueryOperationFields<Transaction.QueryAggregate<Number, Transaction.QuerySelect<Number>>>>, QueryFieldsStart<Transaction, Transaction.QuerySelect<Transaction>>, QueryUpdate<Transaction, Transaction.QuerySelect<Transaction>>> find() {
         return (QueryStarter) EntityCreator.create(Transaction.QuerySelect.class);
     }
@@ -66,7 +68,7 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         Modify counterparty$(Consumer<Account.Modify> init);
     }
 
-    interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Transaction.QueryAggregate<Transaction, Transaction.QuerySelect<Number>>>>> {
+    interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Transaction.QueryAggregate<Transaction, Transaction.QuerySelect<Number>>>>, Transaction.QueryAggregate<Transaction, Transaction.QuerySelect<Number>>> {
     }
 
     interface QueryFields<QR> extends QueryScript<QR>, Transaction.Fields<QR> {

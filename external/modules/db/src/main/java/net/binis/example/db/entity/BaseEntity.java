@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ColumnDefault;
 import net.binis.example.core.base.BaseInterface;
+import lombok.ToString.Include;
 import lombok.ToString;
 import javax.persistence.*;
 import javax.annotation.processing.Generated;

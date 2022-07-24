@@ -22,10 +22,12 @@ import java.time.OffsetDateTime;
 public interface Account extends BaseInterface, Typeable<AccountType>, Externalable<String>, Userable, Nameable, Descriptionable {
 
     // region starters
+    @SuppressWarnings(value = "unchecked")
     static Account.Modify create() {
         return (Account.Modify) EntityCreatorModifier.create(Account.class).with();
     }
 
+    @SuppressWarnings(value = "unchecked")
     static QueryStarter<Account, Account.QuerySelect<Account>, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>>, QueryFieldsStart<Account, Account.QuerySelect<Account>>, QueryUpdate<Account, Account.QuerySelect<Account>>> find() {
         return (QueryStarter) EntityCreator.create(Account.QuerySelect.class);
     }
@@ -72,7 +74,7 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         Modify user$(Consumer<User.Modify> init);
     }
 
-    interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Account, Account.QuerySelect<Number>>>>> {
+    interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Account, Account.QuerySelect<Number>>>>, Account.QueryAggregate<Account, Account.QuerySelect<Number>>> {
     }
 
     interface QueryFields<QR> extends QueryScript<QR>, Account.Fields<QR> {

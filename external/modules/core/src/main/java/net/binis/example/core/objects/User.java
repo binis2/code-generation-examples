@@ -19,10 +19,12 @@ import java.time.OffsetDateTime;
 public interface User extends BaseInterface {
 
     // region starters
+    @SuppressWarnings(value = "unchecked")
     static User.Modify create() {
         return (User.Modify) EntityCreatorModifier.create(User.class).with();
     }
 
+    @SuppressWarnings(value = "unchecked")
     static QueryStarter<User, User.QuerySelect<User>, QueryAggregateOperation<QueryOperationFields<User.QueryAggregate<Number, User.QuerySelect<Number>>>>, QueryFieldsStart<User, User.QuerySelect<User>>, QueryUpdate<User, User.QuerySelect<User>>> find() {
         return (QueryStarter) EntityCreator.create(User.QuerySelect.class);
     }
@@ -57,7 +59,7 @@ public interface User extends BaseInterface {
     interface Modify extends EmbeddedModify<User.Modify, User>, AsyncEntityModifier<User.Modify, User> {
     }
 
-    interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<User.QueryAggregate<User, User.QuerySelect<Number>>>>> {
+    interface QueryAggregate<QR, QA> extends QueryExecute<QR>, QueryAggregator<QA, QueryAggregateOperation<QueryOperationFields<User.QueryAggregate<User, User.QuerySelect<Number>>>>, User.QueryAggregate<User, User.QuerySelect<Number>>> {
     }
 
     interface QueryFields<QR> extends QueryScript<QR>, User.Fields<QR> {
