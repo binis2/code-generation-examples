@@ -19,7 +19,7 @@
 
         <maven-surefire-plugin.skip>false</maven-surefire-plugin.skip>
 
-        <spring.version>2.5.5</spring.version>
+        <spring.version>2.7.2</spring.version>
         <tomcat.version>9.0.50</tomcat.version>
         <spring-security.version>5.5.2</spring-security.version>
         <spring.session.version>2.5.1</spring.session.version>
@@ -27,7 +27,7 @@
         <spring-boot-ws.version>2.5.5</spring-boot-ws.version>
         <spring-ws.version>3.1.1</spring-ws.version>
         <httpclient.version>4.5.13</httpclient.version>
-        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+        <junit.jupiter.version>5.9.0</junit.jupiter.version>
         <jaxb.api.version>2.3.1</jaxb.api.version>
         <jaxb.runtime.version>2.3.3</jaxb.runtime.version>
         <mockito-inline.version>4.6.1</mockito-inline.version>
@@ -104,17 +104,17 @@
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator-spring</artifactId>
-            <version>0.3.8</version>
+            <version>0.3.9</version>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generator-validation</artifactId>
-            <version>0.3.8</version>
+            <version>0.3.9</version>
         </dependency>
         <dependency>
             <groupId>dev.binis</groupId>
             <artifactId>code-generation-test</artifactId>
-            <version>0.3.8</version>
+            <version>0.3.9</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
