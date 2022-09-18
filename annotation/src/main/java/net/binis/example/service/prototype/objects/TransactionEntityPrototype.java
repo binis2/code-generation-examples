@@ -13,6 +13,7 @@ import net.binis.codegen.validation.annotation.ValidateNotBlank;
 import net.binis.codegen.validation.annotation.ValidateNull;
 import net.binis.example.service.objects.base.*;
 import net.binis.example.service.objects.types.TransactionType;
+import net.binis.example.service.prototype.objects.types.TransactionTypePrototype;
 import net.binis.example.service.prototype.base.BaseEntityPrototype;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.FilterDef;
@@ -60,7 +61,7 @@ public interface TransactionEntityPrototype extends BaseEntityPrototype, Taggabl
 
     @Column(name = "transaction_type", nullable = false)
     @ValidateNull(message = "'type' can't be null!")
-    TransactionType type();
+    TransactionTypePrototype type();
 
     @OneToOne(targetEntity = AccountEntityPrototype.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")

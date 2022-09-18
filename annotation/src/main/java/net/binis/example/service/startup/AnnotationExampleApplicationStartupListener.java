@@ -8,6 +8,7 @@ import net.binis.example.service.objects.User;
 import net.binis.example.service.objects.base.Previewable;
 import net.binis.example.service.objects.types.AccountType;
 import net.binis.example.service.objects.types.TransactionType;
+import net.binis.example.service.prototype.objects.types.TransactionTypePrototype;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;

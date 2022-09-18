@@ -12,6 +12,7 @@ import net.binis.example.service.objects.base.*;
 import net.binis.example.service.objects.types.AccountType;
 import net.binis.example.service.prototype.base.BaseEntityPrototype;
 import net.binis.example.service.prototype.objects.base.UserablePrototype;
+import net.binis.example.service.prototype.objects.types.AccountTypePrototype;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.Transient;
 
@@ -60,7 +61,7 @@ public interface AccountEntityPrototype extends BaseEntityPrototype, Typeable<Ac
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     @Column(name = "account_type", nullable = false)
     @Default("AccountType.CHECKING")
-    AccountType type();
+    AccountTypePrototype type();
 
     @OneToOne(targetEntity = UserEntityPrototype.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
