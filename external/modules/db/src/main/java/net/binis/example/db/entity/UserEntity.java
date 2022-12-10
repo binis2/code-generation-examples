@@ -63,7 +63,7 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
 
     // region constructor & initializer
     {
-        CodeFactory.registerType(User.class, UserEntity::new, (p, v) -> ((UserEntity) v).new UserEntitySoloModifyImpl(p));
+        CodeFactory.registerType(User.class, UserEntity::new, (p, v, r) -> ((UserEntity) v).new UserEntitySoloModifyImpl(p));
         CodeFactory.registerType(User.QueryName.class, UserQueryNameImpl::new, null);
         CodeFactory.registerType(User.QuerySelect.class, UserQueryExecutorImpl::new, null);
         CodeFactory.registerType(User.QueryOperationFields.class, UserQueryExecutorImpl::new, null);

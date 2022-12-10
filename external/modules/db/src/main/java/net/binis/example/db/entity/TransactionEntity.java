@@ -81,7 +81,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
 
     // region constructor & initializer
     {
-        CodeFactory.registerType(Transaction.class, TransactionEntity::new, (p, v) -> ((TransactionEntity) v).new TransactionEntityCollectionModifyImpl(p));
+        CodeFactory.registerType(Transaction.class, TransactionEntity::new, (p, v, r) -> ((TransactionEntity) v).new TransactionEntityCollectionModifyImpl(p));
         CodeFactory.registerType(Transaction.QueryName.class, TransactionQueryNameImpl::new, null);
         CodeFactory.registerType(Transaction.QuerySelect.class, TransactionSelectQueryExecutorImpl::new, null);
         CodeFactory.registerType(Transaction.QueryOperationFields.class, TransactionFieldsQueryExecutorImpl::new, null);

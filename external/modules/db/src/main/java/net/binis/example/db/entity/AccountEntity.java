@@ -87,7 +87,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
     // region constructor & initializer
     {
-        CodeFactory.registerType(Account.class, AccountEntity::new, (p, v) -> p instanceof EmbeddedCodeCollection ? ((AccountEntity) v).new AccountEntityCollectionModifyImpl(p) : ((AccountEntity) v).new AccountEntitySoloModifyImpl(p));
+        CodeFactory.registerType(Account.class, AccountEntity::new, (p, v, r) -> p instanceof EmbeddedCodeCollection ? ((AccountEntity) v).new AccountEntityCollectionModifyImpl(p) : ((AccountEntity) v).new AccountEntitySoloModifyImpl(p));
         CodeFactory.registerType(Account.QueryName.class, AccountQueryNameImpl::new, null);
         CodeFactory.registerType(Account.QuerySelect.class, AccountSelectQueryExecutorImpl::new, null);
         CodeFactory.registerType(Account.QueryOperationFields.class, AccountFieldsQueryExecutorImpl::new, null);
