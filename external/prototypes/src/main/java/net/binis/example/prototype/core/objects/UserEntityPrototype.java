@@ -14,7 +14,7 @@ import net.binis.example.core.objects.base.Previewable;
 import net.binis.example.db.entity.AccountEntity;
 import net.binis.example.prototype.core.base.BaseEntityPrototype;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @CodePrototype(

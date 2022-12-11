@@ -23,7 +23,6 @@ import net.binis.codegen.collection.EmbeddedCodeCollection;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import lombok.Data;
-import javax.persistence.*;
 import javax.annotation.processing.Generated;
 import java.util.function.Function;
 import java.util.function.Consumer;
@@ -32,6 +31,7 @@ import java.util.Objects;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.OffsetDateTime;
+import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Generated(value = "TransactionEntityPrototype", comments = "Transaction")
@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = TransactionEntity.TABLE_NAME)
 @Table(name = TransactionEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_date", columnList = "timestamp"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_date_desc", columnList = "timestamp DESC"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_transaction_type", columnList = "transaction_type"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_external_id", columnList = "externalId") })
-@FilterDef(name = "timestampAfter", parameters = { @ParamDef(name = "startDate", type = "java.time.OffsetDateTime") }, defaultCondition = "timestamp >= :startDate")
+@FilterDef(name = "timestampAfter", parameters = { @ParamDef(name = "startDate", type = java.time.OffsetDateTime.class) }, defaultCondition = "timestamp >= :startDate")
 @SuppressWarnings(value = "unchecked")
 public class TransactionEntity extends BaseEntity implements Transaction, Previewable, Modifiable<Transaction.Modify> {
 

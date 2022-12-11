@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.ToString;
+import net.binis.codegen.annotation.CodeClassAnnotations;
 import net.binis.codegen.annotation.CodeConstant;
 import net.binis.codegen.annotation.CodePrototype;
 import net.binis.codegen.annotation.Ignore;
@@ -18,7 +19,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
@@ -68,8 +69,9 @@ public interface BaseEntityPrototype extends Serializable, Identifiable {
     @LastModifiedBy
     String modifiedBy();
 
+    @CodeClassAnnotations
     @ToString(onlyExplicitlyIncluded = true)
-    public static class BaseClassAnnotations {
+    class BaseClassAnnotations {
 
     }
 

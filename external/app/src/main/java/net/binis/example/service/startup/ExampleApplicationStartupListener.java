@@ -19,7 +19,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -170,8 +170,6 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
         log.info("Between:");
         Transaction.find().by().amount().between(50., 250.).order().amount().desc()
                 .list().forEach(this::printTransactionSimple);
-
-
     }
 
     private void showDownCollections() {
@@ -342,8 +340,8 @@ public class ExampleApplicationStartupListener implements ApplicationListener<Co
     }
 
     private <T> T printQuery(T query) {
-        if (query instanceof Queryable) {
-            log.warn("Generated Query: {}", ((Queryable) query).print());
+        if (query instanceof Queryable q) {
+            log.warn("Generated Query: {}", q.print());
         }
         return query;
     }

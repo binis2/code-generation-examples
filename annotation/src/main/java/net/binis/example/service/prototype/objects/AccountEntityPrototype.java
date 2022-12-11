@@ -16,7 +16,7 @@ import net.binis.example.service.prototype.objects.types.AccountTypePrototype;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.Transient;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 import static java.util.Objects.nonNull;

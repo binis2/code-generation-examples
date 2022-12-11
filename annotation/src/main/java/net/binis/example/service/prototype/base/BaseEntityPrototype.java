@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import jakarta.persistence.*;
 import lombok.ToString;
 import net.binis.codegen.annotation.CodeConstant;
 import net.binis.codegen.annotation.CodePrototype;
@@ -18,8 +19,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @CodePrototype(
@@ -51,13 +52,13 @@ public interface BaseEntityPrototype extends Serializable, Identifiable {
     @Column(nullable = false, updatable = false)
     @ColumnDefault("current_timestamp")
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
-    OffsetDateTime created();
+    LocalDateTime created();
 
     @LastModifiedDate
     @Column(nullable = false)
     @ColumnDefault("current_timestamp")
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
-    OffsetDateTime modified();
+    LocalDateTime modified();
 
     @Ignore(forInterface = true, forModifier = true)
     @CreatedBy
@@ -69,7 +70,7 @@ public interface BaseEntityPrototype extends Serializable, Identifiable {
     String modifiedBy();
 
     @ToString(onlyExplicitlyIncluded = true)
-        class BaseClassAnnotations {
+    class BaseClassAnnotations {
 
     }
 

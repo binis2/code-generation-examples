@@ -19,7 +19,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -38,7 +38,7 @@ import java.util.Objects;
         @Index(name = "idx_" + TransactionEntityPrototype.TABLE_NAME + "_external_id", columnList = "externalId")})
 @FilterDef(name = "timestampAfter",
         parameters = {
-                @ParamDef(name = "startDate", type = "java.time.OffsetDateTime")
+                @ParamDef(name = "startDate", type = java.time.OffsetDateTime.class)
         },
         defaultCondition = "timestamp >= :startDate")
 public interface TransactionEntityPrototype extends BaseEntityPrototype, Taggable, Externalable<String>, Titleable, Descriptionable, Typeable<TransactionType> {

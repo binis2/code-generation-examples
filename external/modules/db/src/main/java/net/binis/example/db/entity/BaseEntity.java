@@ -9,17 +9,19 @@ import org.springframework.data.annotation.CreatedBy;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ColumnDefault;
 import net.binis.example.core.base.BaseInterface;
+import net.binis.codegen.factory.CodeFactory;
 import lombok.ToString.Include;
 import lombok.ToString;
-import javax.persistence.*;
 import javax.annotation.processing.Generated;
 import java.time.OffsetDateTime;
+import jakarta.persistence.*;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Generated(value = "BaseEntityPrototype", comments = "BaseInterface")
+@ToString(onlyExplicitlyIncluded = true)
 @MappedSuperclass
 @Access(AccessType.FIELD)
 @EntityListeners(AuditingEntityListener.class)
@@ -59,7 +61,11 @@ public class BaseEntity implements BaseInterface {
     }
 
     public <T> T as(Class<T> cls) {
-        return cls.cast(this);
+        return CodeFactory.projection(this, cls);
+    }
+
+    public <T> T cast(Class<T> cls) {
+        return CodeFactory.cast(this, cls);
     }
 
     @CreatedDate

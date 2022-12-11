@@ -18,12 +18,12 @@ import lombok.ToString.Include;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import lombok.Data;
-import javax.persistence.*;
 import javax.annotation.processing.Generated;
 import java.util.function.Function;
 import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
+import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
