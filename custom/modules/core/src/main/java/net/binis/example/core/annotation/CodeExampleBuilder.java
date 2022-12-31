@@ -1,4 +1,4 @@
-package net.binis.example.service.annotation;
+package net.binis.example.core.annotation;
 
 /*-
  * #%L
@@ -26,6 +26,7 @@ import net.binis.codegen.modifier.BaseModifier;
 import net.binis.codegen.options.CodeOption;
 import net.binis.codegen.options.ValidationFormOption;
 import net.binis.codegen.spring.modifier.AsyncEntityModifier;
+import net.binis.example.core.enricher.ExampleEnricher;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -43,14 +44,14 @@ public @interface CodeExampleBuilder {
     boolean interfaceSetters() default false;
     boolean classGetters() default true;
     boolean classSetters() default false;
-    Class<? extends BaseModifier> baseModifierClass() default AsyncEntityModifier.class;
+    Class<? extends BaseModifier> baseModifierClass() default BaseModifier.class;
     Class<?> mixInClass() default void.class;
     String implementationPackage() default "";
     String basePath() default "";
     String interfacePath() default "";
     String implementationPath() default "";
 
-    Class<? extends Enricher>[] enrichers() default {ModifierEnricher.class, CreatorModifierEnricher.class, ValidationEnricher.class, RegionEnricher.class};
+    Class<? extends Enricher>[] enrichers() default {ModifierEnricher.class, CreatorModifierEnricher.class, ValidationEnricher.class, RegionEnricher.class, ExampleEnricher.class};
     Class<? extends Enricher>[] inheritedEnrichers() default {RegionEnricher.class};
     Class<? extends CodeOption>[] options() default {ValidationFormOption.class};
 
