@@ -76,14 +76,10 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     // endregion
 
     // region getters
-    @OneToMany(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonManagedReference
     public List<Account> getAccounts() {
         return accounts;
     }
 
-    @Column(nullable = false, unique = true)
     public String getEmail() {
         return email;
     }
@@ -96,7 +92,6 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         return lastName;
     }
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;
     }
@@ -106,8 +101,6 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         return this.username + " (" + this.firstName + " " + this.lastName + ")";
     }
 
-    @ToString.Include
-    @Column(unique = true)
     public String getUsername() {
         return username;
     }

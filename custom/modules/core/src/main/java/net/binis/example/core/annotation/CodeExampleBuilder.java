@@ -25,7 +25,6 @@ import net.binis.codegen.enrich.*;
 import net.binis.codegen.modifier.BaseModifier;
 import net.binis.codegen.options.CodeOption;
 import net.binis.codegen.options.ValidationFormOption;
-import net.binis.codegen.spring.modifier.AsyncEntityModifier;
 import net.binis.example.core.enricher.ExampleEnricher;
 
 import java.lang.annotation.Retention;

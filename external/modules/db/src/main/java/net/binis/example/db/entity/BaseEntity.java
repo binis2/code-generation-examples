@@ -68,16 +68,10 @@ public class BaseEntity implements BaseInterface {
         return CodeFactory.cast(this, cls);
     }
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    @ColumnDefault("current_timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     public OffsetDateTime getCreated() {
         return created;
     }
 
-    @CreatedBy
-    @Column(updatable = false)
     public String getCreatedBy() {
         return createdBy;
     }
@@ -86,15 +80,10 @@ public class BaseEntity implements BaseInterface {
         return id;
     }
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    @ColumnDefault("current_timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     public OffsetDateTime getModified() {
         return modified;
     }
 
-    @LastModifiedBy
     public String getModifiedBy() {
         return modifiedBy;
     }
