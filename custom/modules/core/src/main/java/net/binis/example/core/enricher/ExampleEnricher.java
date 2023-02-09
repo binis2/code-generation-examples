@@ -12,10 +12,10 @@ public class ExampleEnricher extends BaseEnricher {
     @Override
     public void enrich(PrototypeDescription<ClassOrInterfaceDeclaration> description) {
         log.info("Enriching {}", description.getInterfaceName());
-        description.getIntf().getParentNode().ifPresent(node -> node.addOrphanComment(new LineComment("Example enriching!")));
+        description.getInterface().getParentNode().ifPresent(node -> node.addOrphanComment(new LineComment("Example enriching!")));
 
-        description.getIntf().addMethod("helloWorld").setBody(null);
-        description.getSpec().addMethod("helloWorld", Modifier.Keyword.PUBLIC)
+        description.getInterface().addMethod("helloWorld").setBody(null);
+        description.getImplementation().addMethod("helloWorld", Modifier.Keyword.PUBLIC)
                 .setBody(description.getParser()
                         .parseBlock("{ example = \"Hello World!\"; }").getResult().get());
     }
