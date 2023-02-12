@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.binis.codegen.enrich.handler.base.BaseEnricher;
 import net.binis.codegen.generation.core.interfaces.PrototypeDescription;
 
+import static net.binis.codegen.generation.core.EnrichHelpers.block;
+
 @Slf4j
 public class ExampleEnricher extends BaseEnricher {
     @Override
@@ -16,8 +18,7 @@ public class ExampleEnricher extends BaseEnricher {
 
         description.getInterface().addMethod("helloWorld").setBody(null);
         description.getImplementation().addMethod("helloWorld", Modifier.Keyword.PUBLIC)
-                .setBody(description.getParser()
-                        .parseBlock("{ example = \"Hello World!\"; }").getResult().get());
+                .setBody(block("{ example = \"Hello World!\"; }"));
     }
 
     @Override
