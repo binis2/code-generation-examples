@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.2</version>
+		<version>3.0.3</version>
 	</parent>
 	<groupId>net.binis.example.service</groupId>
 	<artifactId>annotation.service</artifactId>
@@ -20,7 +20,7 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<postgresql.version>42.5.1</postgresql.version>
-		<spring.version>3.0.2</spring.version>
+		<spring.version>3.0.3</spring.version>
 		<spring-security.version>5.7.3</spring-security.version>
 
 		<main-class>net.binis.example.service.AnnotationExampleApplication</main-class>
@@ -38,6 +38,12 @@
 			<artifactId>code-generator-annotation</artifactId>
 			<version>${binis.version}</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>dev.binis</groupId>
