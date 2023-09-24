@@ -83,7 +83,7 @@ public interface AccountEntityPrototype extends BaseEntityPrototype, Typeable<Ac
     @Data
     @EqualsAndHashCode(callSuper = true)
     @ToString(onlyExplicitlyIncluded = true)
-    abstract class ClassAnnotations extends BaseClassAnnotations implements Previewable {
+    abstract class ClassAnnotations extends BaseEntityPrototype.BaseClassAnnotations implements Previewable {
 
     }
 

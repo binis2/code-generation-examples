@@ -1,5 +1,6 @@
 package net.binis.example.service.startup;
 
+import jakarta.persistence.Tuple;
 import lombok.extern.slf4j.Slf4j;
 import net.binis.codegen.spring.query.Queryable;
 import net.binis.example.service.objects.Account;
@@ -8,12 +9,11 @@ import net.binis.example.service.objects.User;
 import net.binis.example.service.objects.base.Previewable;
 import net.binis.example.service.objects.types.AccountType;
 import net.binis.example.service.objects.types.TransactionType;
-import net.binis.example.service.prototype.objects.types.TransactionTypePrototype;
+import net.binis.example.service.prototype.objects.AccountEntityPrototype;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import jakarta.persistence.Tuple;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -39,6 +39,7 @@ public class AnnotationExampleApplicationStartupListener implements ApplicationL
         log.info(DELIMITER);
 
         log.info("Create or update entity:");
+        User.find().by().username("binis").and().accounts().joinFetch().list();
         var user = User.find().by().username("binis").ensure().with()
                 .firstName("binis")
                 .lastName("Belev")
@@ -138,14 +139,13 @@ public class AnnotationExampleApplicationStartupListener implements ApplicationL
                 .list().forEach(this::printTransactionSimple);
 
         log.info("In:");
-        Transaction.find().by().account().type().in(List.of(AccountType.CHECKING, AccountType.OTHER)).order().amount().desc()
+        Transaction.find().by().account().type().in(AccountType.CHECKING, AccountType.OTHER).order().amount().desc()
                 .list().forEach(this::printTransactionSimple);
 
         log.info("Between:");
         Transaction.find().by().amount().between(50., 250.).order().amount().desc()
                 .list().forEach(this::printTransactionSimple);
         
-
     }
 
     private void showDownCollections() {
@@ -214,4 +214,5 @@ public class AnnotationExampleApplicationStartupListener implements ApplicationL
         }
         return query;
     }
+
 }
