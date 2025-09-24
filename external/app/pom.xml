@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.2</version>
+		<version>3.1.5</version>
 	</parent>
 	<groupId>net.binis.example.service</groupId>
 	<artifactId>example.service</artifactId>
@@ -14,12 +14,12 @@
 	<description>Example service for Binis CodeGen library</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<postgresql.version>42.5.1</postgresql.version>
-		<spring-security.version>6.0.0</spring-security.version>
+		<postgresql.version>42.5.4</postgresql.version>
+		<spring-security.version>6.1.15</spring-security.version>
 
 		<main-class>net.binis.example.service.AnnotationExampleApplication</main-class>
 	</properties>
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>dev.binis</groupId>
 			<artifactId>code-generation-test</artifactId>
-			<version>1.0.3</version>
+			<version>1.1.13</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -61,12 +61,12 @@
 		<dependency>
 			<groupId>dev.binis</groupId>
 			<artifactId>code-generator-spring-configuration</artifactId>
-			<version>1.0.3</version>
+			<version>1.1.13</version>
 		</dependency>
 		<dependency>
 			<groupId>dev.binis</groupId>
 			<artifactId>code-generator-projection</artifactId>
-			<version>1.0.3</version>
+			<version>1.1.13</version>
 		</dependency>
     </dependencies>
 </project>

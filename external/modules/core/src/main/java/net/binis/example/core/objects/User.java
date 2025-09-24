@@ -14,17 +14,16 @@ import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
 
-@Generated(value = "UserEntityPrototype", comments = "UserEntity")
+@Generated(value = "net.binis.example.prototype.core.objects.UserEntityPrototype", comments = "UserEntity")
 @Default("net.binis.example.db.entity.UserEntity")
+@SuppressWarnings("unchecked")
 public interface User extends BaseInterface {
 
     // region starters
-    @SuppressWarnings(value = "unchecked")
     static User.Modify create() {
         return (User.Modify) EntityCreatorModifier.create(User.class).with();
     }
 
-    @SuppressWarnings(value = "unchecked")
     static QueryStarter<User, User.QuerySelect<User>, QueryAggregateOperation<QueryOperationFields<User.QueryAggregate<Number, User.QuerySelect<Number>>>>, QueryFieldsStart<User, User.QuerySelect<User>>, QueryUpdate<User, User.QuerySelect<User>>> find() {
         return (QueryStarter) EntityCreator.create(User.QuerySelect.class);
     }

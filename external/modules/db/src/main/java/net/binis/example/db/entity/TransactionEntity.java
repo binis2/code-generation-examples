@@ -1,11 +1,7 @@
 /*Generated code by Binis' code generator.*/
 package net.binis.example.db.entity;
 
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ColumnDefault;
 import net.binis.example.core.objects.types.TransactionType;
-import net.binis.example.core.objects.base.*;
 import net.binis.example.core.objects.Transaction;
 import net.binis.example.core.objects.Account;
 import net.binis.codegen.validation.validator.NullValidator;
@@ -32,17 +28,15 @@ import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.OffsetDateTime;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Generated(value = "TransactionEntityPrototype", comments = "Transaction")
+@Generated(value = "net.binis.example.prototype.core.objects.TransactionEntityPrototype", comments = "Transaction")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = TransactionEntity.TABLE_NAME)
 @Table(name = TransactionEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_date", columnList = "timestamp"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_date_desc", columnList = "timestamp DESC"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_transaction_type", columnList = "transaction_type"), @Index(name = "idx_" + TransactionEntity.TABLE_NAME + "_external_id", columnList = "externalId") })
-@FilterDef(name = "timestampAfter", parameters = { @ParamDef(name = "startDate", type = java.time.OffsetDateTime.class) }, defaultCondition = "timestamp >= :startDate")
-@SuppressWarnings(value = "unchecked")
-public class TransactionEntity extends BaseEntity implements Transaction, Previewable, Modifiable<Transaction.Modify> {
+@SuppressWarnings("unchecked")
+public class TransactionEntity extends BaseEntity implements Transaction, Modifiable<Transaction.Modify> {
 
     // region constants
     public static final String TABLE_NAME = "transactions";
@@ -52,7 +46,6 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
 
     @OneToOne(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    @JsonBackReference
     protected Account account;
 
     @Column(nullable = false)
@@ -60,18 +53,12 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
 
     @OneToOne(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "counterparty_id")
-    @JsonBackReference
     protected Account counterparty;
-
-    protected String description;
-
-    protected String externalId;
 
     @Transient
     protected Object tag;
 
     @Column(nullable = false)
-    @ColumnDefault("current_timestamp")
     protected OffsetDateTime timestamp = net.binis.example.core.tools.Time.now();
 
     protected String title;
@@ -106,6 +93,8 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
     // endregion
 
     // region inner classes
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class TransactionEntityCollectionModifyImpl extends TransactionEntityEmbeddedModifyImpl implements Transaction.EmbeddedCollectionModify {
 
         protected TransactionEntityCollectionModifyImpl(Object parent) {
@@ -117,7 +106,8 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class TransactionEntityEmbeddedModifyImpl<T, R> extends BaseEntityModifierImpl<T, R> implements Transaction.EmbeddedModify<T, R> {
 
         protected TransactionEntityEmbeddedModifyImpl(R parent) {
@@ -153,16 +143,6 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
             return CodeFactory.modify(this, TransactionEntity.this.counterparty, Account.class);
         }
 
-        public T description(String description) {
-            TransactionEntity.this.description = description;
-            return (T) this;
-        }
-
-        public T externalId(String externalId) {
-            TransactionEntity.this.externalId = externalId;
-            return (T) this;
-        }
-
         public T id(Long id) {
             TransactionEntity.this.id = id;
             return (T) this;
@@ -184,7 +164,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
 
         public T title(String title) {
-            Validation.start(this.getClass(), "title", title).validate(LambdaValidator.class, "(%s) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
+            Validation.start(this.getClass(), "title", title).validate(LambdaValidator.class, "({field}) Value can't be blank!", ((java.util.function.Predicate<String>) org.apache.commons.lang3.StringUtils::isNotBlank)).perform(v -> TransactionEntity.this.title = v);
             return (T) this;
         }
 
@@ -194,6 +174,8 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
+    @Generated("ModifierEnricher")
+    @SuppressWarnings("unchecked")
     protected class TransactionEntityModifyImpl extends TransactionEntityEmbeddedModifyImpl<Transaction.Modify, Transaction> implements Transaction.Modify {
 
         protected TransactionEntityModifyImpl(Transaction parent) {
@@ -217,6 +199,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class TransactionFieldsQueryExecutorImpl extends TransactionQueryExecutorImpl implements Transaction.QueryFieldsStart, EmbeddedFields {
 
         public Account.QueryOperationFields account() {
@@ -232,6 +215,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
+    @Generated("QueryEnricher")
     protected static abstract class TransactionQueryExecutorImpl extends QueryExecutor implements Transaction.QueryUpdate {
 
         protected TransactionQueryExecutorImpl() {
@@ -243,113 +227,98 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
 
         public QuerySelectOperation account(Account account) {
-            return identifier("account", account);
+            return $identifier("account", account);
         }
 
         public QueryAggregateOperation aggregate() {
-            return (QueryAggregateOperation) aggregateStart(new TransactionQueryOrderImpl(this, TransactionQueryExecutorImpl.this::aggregateIdentifier));
+            return (QueryAggregateOperation) _aggregateStart(new TransactionQueryOrderImpl(this, TransactionQueryExecutorImpl.this::_aggregateIdentifier));
         }
 
         public QuerySelectOperation amount(double amount) {
-            return identifier("amount", amount);
+            return $identifier("amount", amount);
         }
 
         public QueryFunctions amount() {
-            return identifier("amount");
+            return $identifier("amount");
         }
 
         public QuerySelectOperation counterparty(Account counterparty) {
-            return identifier("counterparty", counterparty);
+            return $identifier("counterparty", counterparty);
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
-            return identifier("created", created);
+            return $identifier("created", created);
         }
 
         public QueryFunctions created() {
-            return identifier("created");
+            return $identifier("created");
         }
 
         public QuerySelectOperation createdBy(String createdBy) {
-            return identifier("createdBy", createdBy);
+            return $identifier("createdBy", createdBy);
         }
 
         public QueryFunctions createdBy() {
-            return identifier("createdBy");
-        }
-
-        public QuerySelectOperation description(String description) {
-            return identifier("description", description);
-        }
-
-        public QueryFunctions description() {
-            return identifier("description");
-        }
-
-        public QuerySelectOperation externalId(String externalId) {
-            return identifier("externalId", externalId);
-        }
-
-        public QueryFunctions externalId() {
-            return identifier("externalId");
+            return $identifier("createdBy");
         }
 
         public QuerySelectOperation id(Long id) {
-            return identifier("id", id);
+            return $identifier("id", id);
         }
 
         public QueryFunctions id() {
-            return identifier("id");
+            return $identifier("id");
         }
 
         public QuerySelectOperation modified(OffsetDateTime modified) {
-            return identifier("modified", modified);
+            return $identifier("modified", modified);
         }
 
         public QueryFunctions modified() {
-            return identifier("modified");
+            return $identifier("modified");
         }
 
         public QuerySelectOperation modifiedBy(String modifiedBy) {
-            return identifier("modifiedBy", modifiedBy);
+            return $identifier("modifiedBy", modifiedBy);
         }
 
         public QueryFunctions modifiedBy() {
-            return identifier("modifiedBy");
+            return $identifier("modifiedBy");
         }
 
         public Transaction.QueryOrder order() {
-            return (Transaction.QueryOrder) orderStart(new TransactionQueryOrderImpl(this, TransactionQueryExecutorImpl.this::orderIdentifier));
+            return (Transaction.QueryOrder) _orderStart(new TransactionQueryOrderImpl(this, TransactionQueryExecutorImpl.this::_orderIdentifier));
         }
 
         public QuerySelectOperation tag(Object tag) {
-            return identifier("tag", tag);
+            return $identifier("tag", tag);
         }
 
         public QuerySelectOperation timestamp(OffsetDateTime timestamp) {
-            return identifier("timestamp", timestamp);
+            return $identifier("timestamp", timestamp);
         }
 
         public QueryFunctions timestamp() {
-            return identifier("timestamp");
+            return $identifier("timestamp");
         }
 
         public QuerySelectOperation title(String title) {
-            return identifier("title", title);
+            return $identifier("title", title);
         }
 
         public QueryFunctions title() {
-            return identifier("title");
+            return $identifier("title");
         }
 
         public QuerySelectOperation type(TransactionType type) {
-            return identifier("type", type);
+            return $identifier("type", type);
         }
 
         public QueryFunctions type() {
-            return identifier("type");
+            return $identifier("type");
         }
 
+        @Generated("QueryEnricher")
         protected class TransactionQueryOrderImpl extends QueryOrderer implements Transaction.QueryOrder, Transaction.QueryAggregate {
 
             protected TransactionQueryOrderImpl(TransactionQueryExecutorImpl executor, Function<String, Object> func) {
@@ -380,14 +349,6 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
                 return (QueryOrderOperation) func.apply("createdBy");
             }
 
-            public QueryOrderOperation description() {
-                return (QueryOrderOperation) func.apply("description");
-            }
-
-            public QueryOrderOperation externalId() {
-                return (QueryOrderOperation) func.apply("externalId");
-            }
-
             public QueryOrderOperation id() {
                 return (QueryOrderOperation) func.apply("id");
             }
@@ -414,6 +375,7 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class TransactionQueryNameImpl extends BaseQueryNameImpl implements Transaction.QueryName, QueryEmbed {
 
         public Account.QueryName account() {
@@ -423,15 +385,15 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
 
         public QuerySelectOperation account(Account account) {
-            return executor.identifier("account", account);
+            return executor.$identifier("account", account);
         }
 
         public QueryFunctions amount() {
-            return executor.identifier("amount");
+            return executor.$identifier("amount");
         }
 
         public QuerySelectOperation amount(double amount) {
-            return executor.identifier("amount", amount);
+            return executor.$identifier("amount", amount);
         }
 
         public Account.QueryName counterparty() {
@@ -441,94 +403,79 @@ public class TransactionEntity extends BaseEntity implements Transaction, Previe
         }
 
         public QuerySelectOperation counterparty(Account counterparty) {
-            return executor.identifier("counterparty", counterparty);
+            return executor.$identifier("counterparty", counterparty);
         }
 
         public QueryFunctions created() {
-            return executor.identifier("created");
+            return executor.$identifier("created");
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
-            return executor.identifier("created", created);
+            return executor.$identifier("created", created);
         }
 
         public QueryFunctions createdBy() {
-            return executor.identifier("createdBy");
+            return executor.$identifier("createdBy");
         }
 
         public QuerySelectOperation createdBy(String createdBy) {
-            return executor.identifier("createdBy", createdBy);
-        }
-
-        public QueryFunctions description() {
-            return executor.identifier("description");
-        }
-
-        public QuerySelectOperation description(String description) {
-            return executor.identifier("description", description);
-        }
-
-        public QueryFunctions externalId() {
-            return executor.identifier("externalId");
-        }
-
-        public QuerySelectOperation externalId(String externalId) {
-            return executor.identifier("externalId", externalId);
+            return executor.$identifier("createdBy", createdBy);
         }
 
         public QueryFunctions id() {
-            return executor.identifier("id");
+            return executor.$identifier("id");
         }
 
         public QuerySelectOperation id(Long id) {
-            return executor.identifier("id", id);
+            return executor.$identifier("id", id);
         }
 
         public QueryFunctions modified() {
-            return executor.identifier("modified");
+            return executor.$identifier("modified");
         }
 
         public QuerySelectOperation modified(OffsetDateTime modified) {
-            return executor.identifier("modified", modified);
+            return executor.$identifier("modified", modified);
         }
 
         public QueryFunctions modifiedBy() {
-            return executor.identifier("modifiedBy");
+            return executor.$identifier("modifiedBy");
         }
 
         public QuerySelectOperation modifiedBy(String modifiedBy) {
-            return executor.identifier("modifiedBy", modifiedBy);
+            return executor.$identifier("modifiedBy", modifiedBy);
         }
 
         public QuerySelectOperation tag(Object tag) {
-            return executor.identifier("tag", tag);
+            return executor.$identifier("tag", tag);
         }
 
         public QueryFunctions timestamp() {
-            return executor.identifier("timestamp");
+            return executor.$identifier("timestamp");
         }
 
         public QuerySelectOperation timestamp(OffsetDateTime timestamp) {
-            return executor.identifier("timestamp", timestamp);
+            return executor.$identifier("timestamp", timestamp);
         }
 
         public QueryFunctions title() {
-            return executor.identifier("title");
+            return executor.$identifier("title");
         }
 
         public QuerySelectOperation title(String title) {
-            return executor.identifier("title", title);
+            return executor.$identifier("title", title);
         }
 
         public QueryFunctions type() {
-            return executor.identifier("type");
+            return executor.$identifier("type");
         }
 
         public QuerySelectOperation type(TransactionType type) {
-            return executor.identifier("type", type);
+            return executor.$identifier("type", type);
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class TransactionSelectQueryExecutorImpl extends TransactionQueryExecutorImpl implements Transaction.QuerySelect {
 
         public Account.QueryName account() {

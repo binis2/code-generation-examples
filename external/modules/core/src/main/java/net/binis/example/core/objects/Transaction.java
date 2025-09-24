@@ -2,7 +2,6 @@
 package net.binis.example.core.objects;
 
 import net.binis.example.core.objects.types.TransactionType;
-import net.binis.example.core.objects.base.*;
 import net.binis.example.core.base.BaseInterface;
 import net.binis.codegen.spring.query.*;
 import net.binis.codegen.spring.modifier.BaseEntityModifier;
@@ -17,17 +16,16 @@ import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
 
-@Generated(value = "TransactionEntityPrototype", comments = "TransactionEntity")
+@Generated(value = "net.binis.example.prototype.core.objects.TransactionEntityPrototype", comments = "TransactionEntity")
 @Default("net.binis.example.db.entity.TransactionEntity")
-public interface Transaction extends BaseInterface, Taggable, Externalable<String>, Titleable, Descriptionable {
+@SuppressWarnings("unchecked")
+public interface Transaction extends BaseInterface {
 
     // region starters
-    @SuppressWarnings(value = "unchecked")
     static Transaction.Modify create() {
         return (Transaction.Modify) EntityCreatorModifier.create(Transaction.class).with();
     }
 
-    @SuppressWarnings(value = "unchecked")
     static QueryStarter<Transaction, Transaction.QuerySelect<Transaction>, QueryAggregateOperation<QueryOperationFields<Transaction.QueryAggregate<Number, Transaction.QuerySelect<Number>>>>, QueryFieldsStart<Transaction, Transaction.QuerySelect<Transaction>>, QueryUpdate<Transaction, Transaction.QuerySelect<Transaction>>> find() {
         return (QueryStarter) EntityCreator.create(Transaction.QuerySelect.class);
     }
@@ -36,7 +34,9 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
     Account getAccount();
     double getAmount();
     Account getCounterparty();
+    <T> T getTag();
     OffsetDateTime getTimestamp();
+    String getTitle();
     TransactionType getType();
 
     Transaction.Modify with();
@@ -55,8 +55,6 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         T account(Account account);
         T amount(double amount);
         T counterparty(Account counterparty);
-        T description(String description);
-        T externalId(String externalId);
         T tag(Object tag);
         T timestamp(OffsetDateTime timestamp);
         T title(String title);
@@ -84,8 +82,6 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         QueryFunctions<Double, QR> amount();
         QueryFunctions<OffsetDateTime, QR> created();
         QueryFunctions<String, QR> createdBy();
-        QueryFunctions<String, QR> description();
-        QueryFunctions<String, QR> externalId();
         QueryFunctions<Long, QR> id();
         QueryFunctions<OffsetDateTime, QR> modified();
         QueryFunctions<String, QR> modifiedBy();
@@ -105,8 +101,6 @@ public interface Transaction extends BaseInterface, Taggable, Externalable<Strin
         Account.QueryOperationFields<QR> counterparty();
         QR created();
         QR createdBy();
-        QR description();
-        QR externalId();
         QR id();
         QR modified();
         QR modifiedBy();

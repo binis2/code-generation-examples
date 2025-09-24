@@ -17,17 +17,16 @@ import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
 
-@Generated(value = "AccountEntityPrototype", comments = "AccountEntity")
+@Generated(value = "net.binis.example.prototype.core.objects.AccountEntityPrototype", comments = "AccountEntity")
 @Default("net.binis.example.db.entity.AccountEntity")
-public interface Account extends BaseInterface, Typeable<AccountType>, Externalable<String>, Userable, Nameable, Descriptionable {
+@SuppressWarnings("unchecked")
+public interface Account extends BaseInterface, Userable {
 
     // region starters
-    @SuppressWarnings(value = "unchecked")
     static Account.Modify create() {
         return (Account.Modify) EntityCreatorModifier.create(Account.class).with();
     }
 
-    @SuppressWarnings(value = "unchecked")
     static QueryStarter<Account, Account.QuerySelect<Account>, QueryAggregateOperation<QueryOperationFields<Account.QueryAggregate<Number, Account.QuerySelect<Number>>>>, QueryFieldsStart<Account, Account.QuerySelect<Account>>, QueryUpdate<Account, Account.QuerySelect<Account>>> find() {
         return (QueryStarter) EntityCreator.create(Account.QuerySelect.class);
     }
@@ -38,6 +37,8 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
     double getBalance();
     double getPending();
     List<Transaction> getTransactions();
+    AccountType getType();
+    User getUser();
 
     boolean isActive();
 
@@ -62,9 +63,6 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         T active(boolean active);
         T available(double available);
         T balance(double balance);
-        T description(String description);
-        T externalId(String externalId);
-        T name(String name);
         T pending(double pending);
         T type(AccountType type);
         T user(User user);
@@ -93,12 +91,9 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         QueryFunctions<Double, QR> balance();
         QueryFunctions<OffsetDateTime, QR> created();
         QueryFunctions<String, QR> createdBy();
-        QueryFunctions<String, QR> description();
-        QueryFunctions<String, QR> externalId();
         QueryFunctions<Long, QR> id();
         QueryFunctions<OffsetDateTime, QR> modified();
         QueryFunctions<String, QR> modifiedBy();
-        QueryFunctions<String, QR> name();
         QueryFunctions<Double, QR> pending();
         QueryFunctions<AccountType, QR> type();
     }
@@ -114,12 +109,9 @@ public interface Account extends BaseInterface, Typeable<AccountType>, Externala
         QR balance();
         QR created();
         QR createdBy();
-        QR description();
-        QR externalId();
         QR id();
         QR modified();
         QR modifiedBy();
-        QR name();
         QR pending();
         QR type();
         User.QueryOperationFields<QR> user();

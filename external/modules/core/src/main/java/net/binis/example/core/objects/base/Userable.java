@@ -4,7 +4,7 @@ package net.binis.example.core.objects.base;
 import net.binis.example.core.objects.User;
 import javax.annotation.processing.Generated;
 
-@Generated(value = "UserablePrototype", comments = "UserableImpl")
+@Generated(value = "net.binis.example.prototype.core.objects.base.UserablePrototype", comments = "UserableImpl")
 public interface Userable {
     User getUser();
 }

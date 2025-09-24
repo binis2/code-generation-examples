@@ -1,7 +1,6 @@
 /*Generated code by Binis' code generator.*/
 package net.binis.example.db.entity;
 
-import net.binis.example.core.objects.base.Previewable;
 import net.binis.example.core.objects.User;
 import net.binis.example.core.objects.Account;
 import net.binis.codegen.spring.query.executor.QueryOrderer;
@@ -24,17 +23,15 @@ import java.util.Optional;
 import java.util.List;
 import java.time.OffsetDateTime;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Generated(value = "UserEntityPrototype", comments = "User")
+@Generated(value = "net.binis.example.prototype.core.objects.UserEntityPrototype", comments = "User")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = UserEntity.TABLE_NAME)
 @Table(name = UserEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + UserEntity.TABLE_NAME + "_username", columnList = "username") })
-@SuppressWarnings(value = "unchecked")
-public class UserEntity extends BaseEntity implements User, Previewable, Modifiable<User.Modify> {
+@SuppressWarnings("unchecked")
+public class UserEntity extends BaseEntity implements User, Modifiable<User.Modify> {
 
     // region constants
     public static final String TABLE_NAME = "users";
@@ -44,7 +41,6 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
 
     @OneToMany(targetEntity = AccountEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonManagedReference
     protected List<Account> accounts;
 
     @Column(nullable = false, unique = true)
@@ -54,7 +50,6 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
 
     protected String lastName;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected String password;
 
     @ToString.Include
@@ -137,6 +132,8 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
     // endregion
 
     // region inner classes
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class UserEntityEmbeddedModifyImpl<T, R> extends AsyncEntityModifierImpl<T, R> implements User.EmbeddedModify<T, R> {
 
         protected UserEntityEmbeddedModifyImpl(R parent) {
@@ -191,6 +188,8 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         }
     }
 
+    @Generated("ModifierEnricher")
+    @SuppressWarnings("unchecked")
     protected class UserEntityModifyImpl extends UserEntityEmbeddedModifyImpl<User.Modify, User> implements User.Modify {
 
         protected UserEntityModifyImpl(User parent) {
@@ -198,6 +197,8 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class UserEntitySoloModifyImpl extends UserEntityEmbeddedModifyImpl implements User.EmbeddedSoloModify {
 
         protected UserEntitySoloModifyImpl(Object parent) {
@@ -205,6 +206,7 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class UserQueryExecutorImpl extends QueryExecutor implements User.QueryUpdate, User.QuerySelect, User.QueryFieldsStart {
 
         protected UserQueryExecutorImpl() {
@@ -216,93 +218,94 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         }
 
         public QueryAggregateOperation aggregate() {
-            return (QueryAggregateOperation) aggregateStart(new UserQueryOrderImpl(this, UserQueryExecutorImpl.this::aggregateIdentifier));
+            return (QueryAggregateOperation) _aggregateStart(new UserQueryOrderImpl(this, UserQueryExecutorImpl.this::_aggregateIdentifier));
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
-            return identifier("created", created);
+            return $identifier("created", created);
         }
 
         public QueryFunctions created() {
-            return identifier("created");
+            return $identifier("created");
         }
 
         public QuerySelectOperation createdBy(String createdBy) {
-            return identifier("createdBy", createdBy);
+            return $identifier("createdBy", createdBy);
         }
 
         public QueryFunctions createdBy() {
-            return identifier("createdBy");
+            return $identifier("createdBy");
         }
 
         public QuerySelectOperation email(String email) {
-            return identifier("email", email);
+            return $identifier("email", email);
         }
 
         public QueryFunctions email() {
-            return identifier("email");
+            return $identifier("email");
         }
 
         public QuerySelectOperation firstName(String firstName) {
-            return identifier("firstName", firstName);
+            return $identifier("firstName", firstName);
         }
 
         public QueryFunctions firstName() {
-            return identifier("firstName");
+            return $identifier("firstName");
         }
 
         public QuerySelectOperation id(Long id) {
-            return identifier("id", id);
+            return $identifier("id", id);
         }
 
         public QueryFunctions id() {
-            return identifier("id");
+            return $identifier("id");
         }
 
         public QuerySelectOperation lastName(String lastName) {
-            return identifier("lastName", lastName);
+            return $identifier("lastName", lastName);
         }
 
         public QueryFunctions lastName() {
-            return identifier("lastName");
+            return $identifier("lastName");
         }
 
         public QuerySelectOperation modified(OffsetDateTime modified) {
-            return identifier("modified", modified);
+            return $identifier("modified", modified);
         }
 
         public QueryFunctions modified() {
-            return identifier("modified");
+            return $identifier("modified");
         }
 
         public QuerySelectOperation modifiedBy(String modifiedBy) {
-            return identifier("modifiedBy", modifiedBy);
+            return $identifier("modifiedBy", modifiedBy);
         }
 
         public QueryFunctions modifiedBy() {
-            return identifier("modifiedBy");
+            return $identifier("modifiedBy");
         }
 
         public User.QueryOrder order() {
-            return (User.QueryOrder) orderStart(new UserQueryOrderImpl(this, UserQueryExecutorImpl.this::orderIdentifier));
+            return (User.QueryOrder) _orderStart(new UserQueryOrderImpl(this, UserQueryExecutorImpl.this::_orderIdentifier));
         }
 
         public QuerySelectOperation password(String password) {
-            return identifier("password", password);
+            return $identifier("password", password);
         }
 
         public QueryFunctions password() {
-            return identifier("password");
+            return $identifier("password");
         }
 
         public QuerySelectOperation username(String username) {
-            return identifier("username", username);
+            return $identifier("username", username);
         }
 
         public QueryFunctions username() {
-            return identifier("username");
+            return $identifier("username");
         }
 
+        @Generated("QueryEnricher")
         protected class UserQueryOrderImpl extends QueryOrderer implements User.QueryOrder, User.QueryAggregate {
 
             protected UserQueryOrderImpl(UserQueryExecutorImpl executor, Function<String, Object> func) {
@@ -351,86 +354,87 @@ public class UserEntity extends BaseEntity implements User, Previewable, Modifia
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class UserQueryNameImpl extends BaseQueryNameImpl implements User.QueryName, QueryEmbed {
 
         public QueryFunctions created() {
-            return executor.identifier("created");
+            return executor.$identifier("created");
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
-            return executor.identifier("created", created);
+            return executor.$identifier("created", created);
         }
 
         public QueryFunctions createdBy() {
-            return executor.identifier("createdBy");
+            return executor.$identifier("createdBy");
         }
 
         public QuerySelectOperation createdBy(String createdBy) {
-            return executor.identifier("createdBy", createdBy);
+            return executor.$identifier("createdBy", createdBy);
         }
 
         public QueryFunctions email() {
-            return executor.identifier("email");
+            return executor.$identifier("email");
         }
 
         public QuerySelectOperation email(String email) {
-            return executor.identifier("email", email);
+            return executor.$identifier("email", email);
         }
 
         public QueryFunctions firstName() {
-            return executor.identifier("firstName");
+            return executor.$identifier("firstName");
         }
 
         public QuerySelectOperation firstName(String firstName) {
-            return executor.identifier("firstName", firstName);
+            return executor.$identifier("firstName", firstName);
         }
 
         public QueryFunctions id() {
-            return executor.identifier("id");
+            return executor.$identifier("id");
         }
 
         public QuerySelectOperation id(Long id) {
-            return executor.identifier("id", id);
+            return executor.$identifier("id", id);
         }
 
         public QueryFunctions lastName() {
-            return executor.identifier("lastName");
+            return executor.$identifier("lastName");
         }
 
         public QuerySelectOperation lastName(String lastName) {
-            return executor.identifier("lastName", lastName);
+            return executor.$identifier("lastName", lastName);
         }
 
         public QueryFunctions modified() {
-            return executor.identifier("modified");
+            return executor.$identifier("modified");
         }
 
         public QuerySelectOperation modified(OffsetDateTime modified) {
-            return executor.identifier("modified", modified);
+            return executor.$identifier("modified", modified);
         }
 
         public QueryFunctions modifiedBy() {
-            return executor.identifier("modifiedBy");
+            return executor.$identifier("modifiedBy");
         }
 
         public QuerySelectOperation modifiedBy(String modifiedBy) {
-            return executor.identifier("modifiedBy", modifiedBy);
+            return executor.$identifier("modifiedBy", modifiedBy);
         }
 
         public QueryFunctions password() {
-            return executor.identifier("password");
+            return executor.$identifier("password");
         }
 
         public QuerySelectOperation password(String password) {
-            return executor.identifier("password", password);
+            return executor.$identifier("password", password);
         }
 
         public QueryFunctions username() {
-            return executor.identifier("username");
+            return executor.$identifier("username");
         }
 
         public QuerySelectOperation username(String username) {
-            return executor.identifier("username", username);
+            return executor.$identifier("username", username);
         }
     }
     // endregion

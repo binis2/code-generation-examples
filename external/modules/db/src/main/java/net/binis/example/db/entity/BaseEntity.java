@@ -6,8 +6,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.CreatedBy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.ColumnDefault;
 import net.binis.example.core.base.BaseInterface;
 import net.binis.codegen.factory.CodeFactory;
 import lombok.ToString.Include;
@@ -15,12 +13,8 @@ import lombok.ToString;
 import javax.annotation.processing.Generated;
 import java.time.OffsetDateTime;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Generated(value = "BaseEntityPrototype", comments = "BaseInterface")
+@Generated(value = "net.binis.example.prototype.core.base.BaseEntityPrototype", comments = "BaseInterface")
 @ToString(onlyExplicitlyIncluded = true)
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -31,8 +25,6 @@ public class BaseEntity implements BaseInterface {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    @ColumnDefault("current_timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     protected OffsetDateTime created;
 
     @CreatedBy
@@ -40,18 +32,13 @@ public class BaseEntity implements BaseInterface {
     protected String createdBy;
 
     @Id
-    @GenericGenerator(name = "seq_id", strategy = "net.binis.example.db.generator.IdGenerator")
     @GeneratedValue(generator = "seq_id")
     @Column(name = "id", nullable = false, updatable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonSerialize(using = ToStringSerializer.class)
     @ToString.Include
     protected Long id;
 
     @LastModifiedDate
     @Column(nullable = false)
-    @ColumnDefault("current_timestamp")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     protected OffsetDateTime modified;
 
     @LastModifiedBy

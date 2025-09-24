@@ -2,9 +2,7 @@
 package net.binis.example.db.entity;
 
 import org.springframework.data.annotation.Transient;
-import org.hibernate.annotations.ColumnDefault;
 import net.binis.example.core.objects.types.AccountType;
-import net.binis.example.core.objects.base.*;
 import net.binis.example.core.objects.User;
 import net.binis.example.core.objects.Transaction;
 import net.binis.example.core.objects.Account;
@@ -29,18 +27,15 @@ import static java.util.Objects.nonNull;
 import java.util.List;
 import java.time.OffsetDateTime;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Generated(value = "AccountEntityPrototype", comments = "Account")
+@Generated(value = "net.binis.example.prototype.core.objects.AccountEntityPrototype", comments = "Account")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(onlyExplicitlyIncluded = true)
 @Entity(name = AccountEntity.TABLE_NAME)
 @Table(name = AccountEntity.TABLE_NAME, indexes = { @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_account_number", columnList = "accountNumber"), @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_active", columnList = "active"), @Index(name = "idx_" + AccountEntity.TABLE_NAME + "_external", columnList = "externalId", unique = true) })
-@SuppressWarnings(value = "unchecked")
-public class AccountEntity extends BaseEntity implements Account, Previewable, Modifiable<Account.Modify> {
+@SuppressWarnings("unchecked")
+public class AccountEntity extends BaseEntity implements Account, Modifiable<Account.Modify> {
 
     // region constants
     public static final String TABLE_NAME = "accounts";
@@ -50,39 +45,26 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
     protected String accountNumber;
 
-    @ColumnDefault("true")
     protected boolean active = true;
 
     @Column(nullable = false)
-    @ColumnDefault("0.0")
     protected double available;
 
     @Column(nullable = false)
-    @ColumnDefault("0.0")
     protected double balance;
 
-    protected String description;
-
-    protected String externalId;
-
-    protected String name;
-
     @Column(nullable = false)
-    @ColumnDefault("0.0")
     protected double pending;
 
     @OneToMany(targetEntity = TransactionEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    @JsonManagedReference
     protected List<Transaction> transactions;
 
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     @Column(name = "account_type", nullable = false)
     protected AccountType type = AccountType.CHECKING;
 
     @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     protected User user;
 
     // region constructor & initializer
@@ -112,6 +94,8 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
     // endregion
 
     // region inner classes
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class AccountEntityCollectionModifyImpl extends AccountEntityEmbeddedModifyImpl implements Account.EmbeddedCollectionModify {
 
         protected AccountEntityCollectionModifyImpl(Object parent) {
@@ -123,6 +107,8 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class AccountEntityEmbeddedModifyImpl<T, R> extends BaseEntityModifierImpl<T, R> implements Account.EmbeddedModify<T, R> {
 
         protected AccountEntityEmbeddedModifyImpl(R parent) {
@@ -149,16 +135,6 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
             return (T) this;
         }
 
-        public T description(String description) {
-            AccountEntity.this.description = description;
-            return (T) this;
-        }
-
-        public T externalId(String externalId) {
-            AccountEntity.this.externalId = externalId;
-            return (T) this;
-        }
-
         public T id(Long id) {
             AccountEntity.this.id = id;
             return (T) this;
@@ -166,11 +142,6 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
         public T modified(OffsetDateTime modified) {
             AccountEntity.this.modified = modified;
-            return (T) this;
-        }
-
-        public T name(String name) {
-            AccountEntity.this.name = name;
             return (T) this;
         }
 
@@ -209,6 +180,8 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
+    @Generated("ModifierEnricher")
+    @SuppressWarnings("unchecked")
     protected class AccountEntityModifyImpl extends AccountEntityEmbeddedModifyImpl<Account.Modify, Account> implements Account.Modify {
 
         protected AccountEntityModifyImpl(Account parent) {
@@ -224,6 +197,8 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Generated("ModifierEnricher")
     protected class AccountEntitySoloModifyImpl extends AccountEntityEmbeddedModifyImpl implements Account.EmbeddedSoloModify {
 
         protected AccountEntitySoloModifyImpl(Object parent) {
@@ -231,6 +206,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class AccountFieldsQueryExecutorImpl extends AccountQueryExecutorImpl implements Account.QueryFieldsStart, EmbeddedFields {
 
         public User.QueryOperationFields user() {
@@ -240,6 +216,7 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
+    @Generated("QueryEnricher")
     protected static abstract class AccountQueryExecutorImpl extends QueryExecutor implements Account.QueryUpdate {
 
         protected AccountQueryExecutorImpl() {
@@ -251,115 +228,91 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
 
         public QuerySelectOperation accountNumber(String accountNumber) {
-            return identifier("accountNumber", accountNumber);
+            return $identifier("accountNumber", accountNumber);
         }
 
         public QueryFunctions accountNumber() {
-            return identifier("accountNumber");
+            return $identifier("accountNumber");
         }
 
         public QuerySelectOperation active(boolean active) {
-            return identifier("active", active);
+            return $identifier("active", active);
         }
 
         public QueryFunctions active() {
-            return identifier("active");
+            return $identifier("active");
         }
 
         public QueryAggregateOperation aggregate() {
-            return (QueryAggregateOperation) aggregateStart(new AccountQueryOrderImpl(this, AccountQueryExecutorImpl.this::aggregateIdentifier));
+            return (QueryAggregateOperation) _aggregateStart(new AccountQueryOrderImpl(this, AccountQueryExecutorImpl.this::_aggregateIdentifier));
         }
 
         public QuerySelectOperation available(double available) {
-            return identifier("available", available);
+            return $identifier("available", available);
         }
 
         public QueryFunctions available() {
-            return identifier("available");
+            return $identifier("available");
         }
 
         public QuerySelectOperation balance(double balance) {
-            return identifier("balance", balance);
+            return $identifier("balance", balance);
         }
 
         public QueryFunctions balance() {
-            return identifier("balance");
+            return $identifier("balance");
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
-            return identifier("created", created);
+            return $identifier("created", created);
         }
 
         public QueryFunctions created() {
-            return identifier("created");
+            return $identifier("created");
         }
 
         public QuerySelectOperation createdBy(String createdBy) {
-            return identifier("createdBy", createdBy);
+            return $identifier("createdBy", createdBy);
         }
 
         public QueryFunctions createdBy() {
-            return identifier("createdBy");
-        }
-
-        public QuerySelectOperation description(String description) {
-            return identifier("description", description);
-        }
-
-        public QueryFunctions description() {
-            return identifier("description");
-        }
-
-        public QuerySelectOperation externalId(String externalId) {
-            return identifier("externalId", externalId);
-        }
-
-        public QueryFunctions externalId() {
-            return identifier("externalId");
+            return $identifier("createdBy");
         }
 
         public QuerySelectOperation id(Long id) {
-            return identifier("id", id);
+            return $identifier("id", id);
         }
 
         public QueryFunctions id() {
-            return identifier("id");
+            return $identifier("id");
         }
 
         public QuerySelectOperation modified(OffsetDateTime modified) {
-            return identifier("modified", modified);
+            return $identifier("modified", modified);
         }
 
         public QueryFunctions modified() {
-            return identifier("modified");
+            return $identifier("modified");
         }
 
         public QuerySelectOperation modifiedBy(String modifiedBy) {
-            return identifier("modifiedBy", modifiedBy);
+            return $identifier("modifiedBy", modifiedBy);
         }
 
         public QueryFunctions modifiedBy() {
-            return identifier("modifiedBy");
-        }
-
-        public QuerySelectOperation name(String name) {
-            return identifier("name", name);
-        }
-
-        public QueryFunctions name() {
-            return identifier("name");
+            return $identifier("modifiedBy");
         }
 
         public Account.QueryOrder order() {
-            return (Account.QueryOrder) orderStart(new AccountQueryOrderImpl(this, AccountQueryExecutorImpl.this::orderIdentifier));
+            return (Account.QueryOrder) _orderStart(new AccountQueryOrderImpl(this, AccountQueryExecutorImpl.this::_orderIdentifier));
         }
 
         public QuerySelectOperation pending(double pending) {
-            return identifier("pending", pending);
+            return $identifier("pending", pending);
         }
 
         public QueryFunctions pending() {
-            return identifier("pending");
+            return $identifier("pending");
         }
 
         public QueryJoinCollectionFunctions transactions() {
@@ -367,17 +320,18 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
 
         public QuerySelectOperation type(AccountType type) {
-            return identifier("type", type);
+            return $identifier("type", type);
         }
 
         public QueryFunctions type() {
-            return identifier("type");
+            return $identifier("type");
         }
 
         public QuerySelectOperation user(User user) {
-            return identifier("user", user);
+            return $identifier("user", user);
         }
 
+        @Generated("QueryEnricher")
         protected class AccountQueryOrderImpl extends QueryOrderer implements Account.QueryOrder, Account.QueryAggregate {
 
             protected AccountQueryOrderImpl(AccountQueryExecutorImpl executor, Function<String, Object> func) {
@@ -408,14 +362,6 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
                 return (QueryOrderOperation) func.apply("createdBy");
             }
 
-            public QueryOrderOperation description() {
-                return (QueryOrderOperation) func.apply("description");
-            }
-
-            public QueryOrderOperation externalId() {
-                return (QueryOrderOperation) func.apply("externalId");
-            }
-
             public QueryOrderOperation id() {
                 return (QueryOrderOperation) func.apply("id");
             }
@@ -426,10 +372,6 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
 
             public QueryOrderOperation modifiedBy() {
                 return (QueryOrderOperation) func.apply("modifiedBy");
-            }
-
-            public QueryOrderOperation name() {
-                return (QueryOrderOperation) func.apply("name");
             }
 
             public QueryOrderOperation pending() {
@@ -448,118 +390,95 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class AccountQueryNameImpl extends BaseQueryNameImpl implements Account.QueryName, QueryEmbed {
 
         public QueryFunctions accountNumber() {
-            return executor.identifier("accountNumber");
+            return executor.$identifier("accountNumber");
         }
 
         public QuerySelectOperation accountNumber(String accountNumber) {
-            return executor.identifier("accountNumber", accountNumber);
+            return executor.$identifier("accountNumber", accountNumber);
         }
 
         public QueryFunctions active() {
-            return executor.identifier("active");
+            return executor.$identifier("active");
         }
 
         public QuerySelectOperation active(boolean active) {
-            return executor.identifier("active", active);
+            return executor.$identifier("active", active);
         }
 
         public QueryFunctions available() {
-            return executor.identifier("available");
+            return executor.$identifier("available");
         }
 
         public QuerySelectOperation available(double available) {
-            return executor.identifier("available", available);
+            return executor.$identifier("available", available);
         }
 
         public QueryFunctions balance() {
-            return executor.identifier("balance");
+            return executor.$identifier("balance");
         }
 
         public QuerySelectOperation balance(double balance) {
-            return executor.identifier("balance", balance);
+            return executor.$identifier("balance", balance);
         }
 
         public QueryFunctions created() {
-            return executor.identifier("created");
+            return executor.$identifier("created");
         }
 
         public QuerySelectOperation created(OffsetDateTime created) {
-            return executor.identifier("created", created);
+            return executor.$identifier("created", created);
         }
 
         public QueryFunctions createdBy() {
-            return executor.identifier("createdBy");
+            return executor.$identifier("createdBy");
         }
 
         public QuerySelectOperation createdBy(String createdBy) {
-            return executor.identifier("createdBy", createdBy);
-        }
-
-        public QueryFunctions description() {
-            return executor.identifier("description");
-        }
-
-        public QuerySelectOperation description(String description) {
-            return executor.identifier("description", description);
-        }
-
-        public QueryFunctions externalId() {
-            return executor.identifier("externalId");
-        }
-
-        public QuerySelectOperation externalId(String externalId) {
-            return executor.identifier("externalId", externalId);
+            return executor.$identifier("createdBy", createdBy);
         }
 
         public QueryFunctions id() {
-            return executor.identifier("id");
+            return executor.$identifier("id");
         }
 
         public QuerySelectOperation id(Long id) {
-            return executor.identifier("id", id);
+            return executor.$identifier("id", id);
         }
 
         public QueryFunctions modified() {
-            return executor.identifier("modified");
+            return executor.$identifier("modified");
         }
 
         public QuerySelectOperation modified(OffsetDateTime modified) {
-            return executor.identifier("modified", modified);
+            return executor.$identifier("modified", modified);
         }
 
         public QueryFunctions modifiedBy() {
-            return executor.identifier("modifiedBy");
+            return executor.$identifier("modifiedBy");
         }
 
         public QuerySelectOperation modifiedBy(String modifiedBy) {
-            return executor.identifier("modifiedBy", modifiedBy);
-        }
-
-        public QueryFunctions name() {
-            return executor.identifier("name");
-        }
-
-        public QuerySelectOperation name(String name) {
-            return executor.identifier("name", name);
+            return executor.$identifier("modifiedBy", modifiedBy);
         }
 
         public QueryFunctions pending() {
-            return executor.identifier("pending");
+            return executor.$identifier("pending");
         }
 
         public QuerySelectOperation pending(double pending) {
-            return executor.identifier("pending", pending);
+            return executor.$identifier("pending", pending);
         }
 
         public QueryFunctions type() {
-            return executor.identifier("type");
+            return executor.$identifier("type");
         }
 
         public QuerySelectOperation type(AccountType type) {
-            return executor.identifier("type", type);
+            return executor.$identifier("type", type);
         }
 
         public User.QueryName user() {
@@ -569,10 +488,11 @@ public class AccountEntity extends BaseEntity implements Account, Previewable, M
         }
 
         public QuerySelectOperation user(User user) {
-            return executor.identifier("user", user);
+            return executor.$identifier("user", user);
         }
     }
 
+    @Generated("QueryEnricher")
     protected static class AccountSelectQueryExecutorImpl extends AccountQueryExecutorImpl implements Account.QuerySelect {
 
         public User.QueryName user() {

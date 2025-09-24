@@ -1,15 +1,15 @@
 /*Generated code by Binis' code generator.*/
 package net.binis.example.core.base;
 
-import net.binis.example.core.objects.base.Identifiable;
 import net.binis.codegen.objects.Projectable;
 import javax.annotation.processing.Generated;
 import java.time.OffsetDateTime;
 import java.io.Serializable;
 
-@Generated(value = "BaseEntityPrototype", comments = "BaseEntity")
-public interface BaseInterface extends Serializable, Identifiable, Projectable {
+@Generated(value = "net.binis.example.prototype.core.base.BaseEntityPrototype", comments = "BaseEntity")
+public interface BaseInterface extends Serializable, Projectable {
     OffsetDateTime getCreated();
+    Long getId();
     OffsetDateTime getModified();
 
     interface Fields<T> {
